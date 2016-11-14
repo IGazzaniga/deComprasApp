@@ -1,0 +1,17 @@
+<ion-view view-title="Agregar">
+  <ion-content class="padding">
+    <div class="list">
+      <label class="item item-input item-floating-label">
+        <span class="input-label">Titulo</span>
+        <input ng-model="nuevaLista.titulo" type="text" placeholder="Titulo">
+      </label>
+      <label class="item item-input item-floating-label">
+        <span class="input-label">Detalles</span>
+        <input ng-model="nuevaLista.detalles" type="text" placeholder="Detalles">
+      </label>
+      <button ng-click="saveList(nuevaLista)" class="button button-block button-positive">
+        Guardar
+      </button>
+    </div>
+  </ion-content>
+</ion-view>

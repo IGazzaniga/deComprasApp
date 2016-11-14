@@ -1,0 +1,8 @@
+<ion-view view-title="Mis Listas">
+  <ion-content class="padding">
+    <h2 ng-if="listasSize == 0">Aun no tiene listas. Agregue una!</h2>
+    <ul>
+    	<li ng-repeat="lista in misListas">{{lista.titulo}}</li>
+    </ul>
+  </ion-content>
+</ion-view>
