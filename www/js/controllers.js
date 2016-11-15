@@ -4,15 +4,21 @@ angular.module('starter.controllers', [])
 
   $scope.listasSize=Listas.getSize();
 
-  $scope.misListas = [];
-
-  $scope.misListas.push(Listas.getAll());
+  $scope.misListas = Listas.getAll();
 
 }])
 
 .controller('AgregarCtrl', ['$scope', 'Listas', function($scope, Listas) {
 
-  $scope.nuevaLista= {};
+  $scope.nuevaLista= {
+  	'titulo': '',
+  	'detalle':'',
+  	'fecha':'',
+  	'hora':'',
+  	'hecho': false,
+  	'items': [],
+  	'total': 0
+  };
 
   $scope.saveList = function(lista) {
     Listas.saveList(lista);

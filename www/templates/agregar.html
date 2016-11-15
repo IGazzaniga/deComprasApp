@@ -7,7 +7,15 @@
       </label>
       <label class="item item-input item-floating-label">
         <span class="input-label">Detalles</span>
-        <input ng-model="nuevaLista.detalles" type="text" placeholder="Detalles">
+        <input ng-model="nuevaLista.detalle" type="text" placeholder="Detalles">
+      </label>
+      <label class="item item-input item-floating-label">
+        <span class="input-label">Fecha</span>
+        <input ng-model="nuevaLista.fecha" type="date" placeholder="Detalles">
+      </label>
+      <label class="item item-input item-floating-label">
+        <span class="input-label">Hora</span>
+        <input ng-model="nuevaLista.hora" type="time" placeholder="Detalles">
       </label>
       <button ng-click="saveList(nuevaLista)" class="button button-block button-positive">
         Guardar

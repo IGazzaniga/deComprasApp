@@ -7,13 +7,15 @@ angular.module('starter.services', [])
       return localStorage.length;
     },
     getAll: function() {
-      for (var i = 0; i < localStorage.length; i++) {
-        return store.get(i);
+      var listas = [];
+      for (var i = 1; i < localStorage.length+1; i++) {
+        listas.push(store.get(i));
       }
+      return listas;
     },
     saveList: function(lista) {
       var idListActual = localStorage.length;
-      var idListNew = idListActual++;
+      var idListNew = idListActual + 1;
       store.set(idListNew ,lista);
     }
   };

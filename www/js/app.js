@@ -42,6 +42,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
   .state('main.mis-listas', {
     url: '/listas',
+    cache: false,
     views: {
       'mis-listas': {
         templateUrl: 'templates/mis-listas.html',
