@@ -46,6 +46,15 @@ angular.module('starter.services', [])
       item.idItem = idItemNew;
       lista.items.push(item);
       store.set(listaId, lista);
+    },
+
+    delete: function(listaId,idItem) {
+      var lista = Listas.getOneList(listaId);
+      var items = lista.items;
+      var index = idItem - 1;
+      items.splice(index,1);
+      lista.items = items;
+      store.set(listaId, lista);
     }
   };
 }])

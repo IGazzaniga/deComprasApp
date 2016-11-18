@@ -6,7 +6,8 @@
 	<ion-content class="padding">
 		<div ng-repeat="item in items track by $index">
 			<h2>{{item.titulo}}</h2>
+			<button ng-click="showConfirmDelete(item.idItem)">eliminar</button>
 		</div>
-		<button ng-click="modal.show()">agregar</button>
+		<button ng-click="createModal()">agregar</button>
 	</ion-content>
 </ion-view>f
