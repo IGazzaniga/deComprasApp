@@ -44,7 +44,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     url: '/listas',
     cache: false,
     views: {
-      'mis-listas': {
+      'content': {
         templateUrl: 'templates/mis-listas.html',
         controller: 'MisListasCtrl'
       }
@@ -52,24 +52,24 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   })
 
   .state('main.agregar', {
-      url: '/agregar',
-      views: {
-        'agregar': {
-          templateUrl: 'templates/agregar.html',
-          controller: 'AgregarCtrl'
-        }
-      }
-    })
-
-  .state('main.account', {
-    url: '/account',
+    url: '/agregar',
     views: {
-      'tab-account': {
-        templateUrl: 'templates/tab-account.html',
-        controller: 'AccountCtrl'
+      'content': {
+        templateUrl: 'templates/agregar.html',
+        controller: 'AgregarCtrl'
       }
     }
-  });
+  })
+
+  .state('main.lista', {
+    url: '/lista/:listaId',
+    views: {
+      'content': {
+        templateUrl: 'templates/lista.html',
+        controller: 'ListaCtrl'
+      }
+    }  
+  })
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/main/listas');

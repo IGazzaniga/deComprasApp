@@ -1,0 +1,12 @@
+<ion-view view-title="Lista ">
+	<ion-nav-bar class="bar-stable">
+		<ion-nav-back-button>
+	  	</ion-nav-back-button>
+	</ion-nav-bar>
+	<ion-content class="padding">
+		<div ng-repeat="item in items track by $index">
+			<h2>{{item.titulo}}</h2>
+		</div>
+		<button ng-click="modal.show()">agregar</button>
+	</ion-content>
+</ion-view>f

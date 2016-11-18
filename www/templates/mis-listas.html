@@ -1,11 +1,13 @@
 <ion-view view-title="Mis Listas">
-  <ion-content class="padding">
+  
     <h2 ng-if="listasSize == 0">Aun no tiene listas. Agregue una!</h2>
 	<div class="card">
 	  <div ng-repeat="lista in misListas track by $index" class="item item-text-wrap">
-	    <h2>{{lista.titulo}}</h2>
+	  	<a href="" ui-sref="main.lista({listaId: lista.listaId})">
+	  		<h2>{{lista.titulo}}</h2>
+	  	</a>
 	    <p>{{lista.detalle}}</p>
 	  </div>
 	</div>
-  </ion-content>
+  
 </ion-view>
