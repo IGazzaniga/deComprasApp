@@ -1,13 +1,15 @@
 <ion-view view-title="Mis Listas">
-  
-    <h2 ng-if="listasSize == 0">Aun no tiene listas. Agregue una!</h2>
-	<div class="card">
-	  <div ng-repeat="lista in misListas track by $index" class="item item-text-wrap">
-	  	<a href="" ui-sref="main.lista({listaId: lista.listaId})">
-	  		<h2>{{lista.titulo}}</h2>
-	  	</a>
-	    <p>{{lista.detalle}}</p>
-	  </div>
-	</div>
-  
+	<ion-content>
+	    <h2 ng-if="listasSize == 0">Aun no tiene listas. Agregue una!</h2>
+		<div class="card">
+		  <div ng-repeat="lista in misListas track by $index" class="item item-text-wrap">
+		  	<a href="" ui-sref="main.lista({listaId: lista.listaId})">
+		  		<h2>{{lista.nombre}}</h2>
+		  	</a>
+		    <p>{{lista.detalle}}</p>
+		    <a ng-click="showConfirmDeleteList(lista.idLista)" class="button button-icon icon ion-trash-b"></a>	    
+		  </div>
+		</div>
+		<a ng-click="createModalList()" class="button button-icon icon ion-plus-circled"></a>
+	</ion-content>  
 </ion-view>

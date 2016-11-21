@@ -1,9 +1,13 @@
-<ion-view view-title="Agregar">
-  <ion-content class="padding">
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive">
+    <h1 class="title">Nueva Lista</h1>
+    <button class="button button-clear button-primary" ng-click="modal.remove()">X</button>
+  </ion-header-bar>
+  <ion-content>
     <div class="list">
       <label class="item item-input item-floating-label">
         <span class="input-label">Titulo</span>
-        <input ng-model="nuevaLista.titulo" type="text" placeholder="Titulo">
+        <input ng-model="nuevaLista.nombre" type="text" placeholder="Titulo">
       </label>
       <label class="item item-input item-floating-label">
         <span class="input-label">Detalles</span>
@@ -17,9 +21,9 @@
         <span class="input-label">Hora</span>
         <input ng-model="nuevaLista.hora" type="time" placeholder="Detalles">
       </label>
-      <button ng-click="saveList(nuevaLista)" class="button button-block button-positive">
+      <button ng-click="addList(nuevaLista)" class="button button-block button-positive">
         Guardar
       </button>
     </div>
   </ion-content>
-</ion-view>
+</ion-modal-view>
