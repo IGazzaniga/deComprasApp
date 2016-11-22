@@ -124,8 +124,9 @@ angular.module('starter.controllers', [])
 	 };
 
 	$scope.deleteList = function(idList) {
-		Listas.deleteList(idList);
-		$scope.loadList();
+		Listas.deleteList(idList).then(function(data){
+			$scope.loadList();
+		});
 	}
 
 }])
@@ -133,7 +134,17 @@ angular.module('starter.controllers', [])
 .controller('ListaCtrl', ['$scope', '$stateParams', '$ionicModal', '$ionicPopup', 'Items', function($scope, $stateParams, $ionicModal, $ionicPopup, Items, Listas ) {
 
 	//llamada al servicio para que traiga los items de la lista seleccionada
-	$scope.items = Items.getItems($stateParams.listaId);
+
+	$scope.loadItems = function() {
+		Items.getItems($stateParams.listaId).then(function(results){
+		  	$scope.items = [];
+		    for(var i=0; i < results.rows.length; i++){
+		      $scope.items.push(results.rows.item(i));
+		    }
+		});		
+	};
+
+	$scope.loadItems();
 
 	$scope.createModalItem = function() {
 	  $ionicModal.fromTemplateUrl('templates/modalAddItem.html', {
@@ -147,11 +158,12 @@ angular.module('starter.controllers', [])
 	 $scope.addItem = function(item) {
 	 	$scope.saveItem($stateParams,item);
 	 	$scope.modal.remove();
-	 	$scope.items.push(item);
 	 };
 
 	$scope.saveItem = function($stateParams, item) {
-		Items.saveItem($stateParams.listaId, item);
+		Items.saveItem($stateParams.listaId, item).then(function(data){
+			$scope.loadItems();
+		});
 	};
 
 	// Confirm para borrar item
@@ -165,16 +177,13 @@ angular.module('starter.controllers', [])
 
 	   confirmPopup.then(function(res) {
 	     if(res) {
-	       $scope.deleteItem(idItem);
+	       Items.deleteItem(idItem).then(function(data){
+	       	$scope.loadItems();
+	       });
 	     } else {
 	       console.log('You are not sure');
 	     }
 	   });
 	 };
-
-	$scope.deleteItem = function(idItem) {
-		Items.delete($stateParams.listaId,idItem);
-		$scope.items = Items.getItems($stateParams.listaId);
-	}
 
 }])

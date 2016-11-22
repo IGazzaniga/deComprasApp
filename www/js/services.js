@@ -32,20 +32,20 @@ angular.module('starter.services', [])
 
 .factory('Items', ['$webSql', function($webSql) {
 
-  var id = 0;
+  var db = $webSql.openDatabase('deComprasDB', '1.0', '', 2 * 1024 * 1024);
 
   return {
 
     getItems: function(listaId) {
-
+      return db.select("item",{ idLista: listaId });
     },
 
     saveItem: function(listaId, item) {
-
+      return db.insert('item', {"nombre": item.nombre, "precio": 0, "idLista":listaId});
     },
 
-    delete: function(listaId,idItem) {
-
+    deleteItem: function(idItem) {
+      return db.del('item',{idItem: idItem});
     }
   };
 }])
