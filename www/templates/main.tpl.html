@@ -4,32 +4,12 @@ Each tab's child <ion-nav-view> directive will have its own
 navigation history that also transitions its views in and out.
 -->
 
-<ion-nav-bar class="bar-stable">
-  <ion-nav-back-button>
-  </ion-nav-back-button>
-  <ion-nav-view name="header"></ion-nav-view>
-</ion-nav-bar>
-
-
 <ion-nav-view name="content"></ion-nav-view>
 
-
 <ion-tabs class="tabs-icon-top tabs-color-active-positive">
-
-  <!-- Dashboard Tab -->
-  <ion-tab title="Mis Listas" icon-off="ion-clipboard" icon-on="ion-clipboard" href="#/main/mis-listas">
-    
-  </ion-tab>
-
-  <!-- Chats Tab -->
-  <ion-tab title="Agregar" icon-off="ion-ios-chatboxes-outline" icon-on="ion-ios-chatboxes" href="#/main/agregar">
-    
-  </ion-tab>
-
-  <!-- Account Tab -->
-  <ion-tab title="Account" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear">
-    
-  </ion-tab>
-
-
+  <ion-tab title="Mis Listas" icon-off="ion-clipboard" icon-on="ion-clipboard" href="#/main/mis-listas"></ion-tab>
+  <ion-tab title="Listas Compartidas" icon-off="ion-ios-chatboxes-outline" icon-on="ion-ios-chatboxes"></ion-tab>
+  <ion-tab title="Account" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear"></ion-tab>
 </ion-tabs>
+
+
