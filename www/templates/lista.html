@@ -8,7 +8,7 @@
 			<li class="item" ng-repeat="item in items track by item.idItem" index="item.idItem">		
 				<ion-checkbox ng-model="item.checked" ng-change="tacharDestachar(item.idItem,item.checked)">{{item.nombre}}</ion-checkbox>
 				<span class="item-precio">{{item.precio}}</span>
-				<a class="button icono-borrar button-icon icon ion-trash-b" ng-click="showConfirmDelete()"></a>	
+				<a class="button icono-borrar button-icon icon ion-trash-b" ng-click="showConfirmDelete(item.idItem)"></a>	
 			</li>	
 		</ul>	
 		<button ng-click="createModalItem()" class="pull-right button button-icon icon ion-plus-circled"></button>
