@@ -1,16 +1,21 @@
 <ion-view view-title="{{listaActual.nombre}}">
+	<ion-nav-bar class="bar-positive">
+		<ion-nav-back-button></ion-nav-back-button>
+	</ion-nav-bar>
+	
 	<ion-content>
-		<div class="button-bar">
-		  <a class="button icon-left ion-information-circled button-positive" ng-click="showTotal(listaActual.idLista)">Total</a>
-		  <a class="button icon-left ion-close button-positive" ng-click="showConfirmVaciar(listaActual.idLista)">Vaciar</a>
-		</div>	
+		<div class="button-bar bar-dark">
+		  <a ng-disabled="items.length==0" class="button icon-left ion-information-circled button-dark" ng-click="showTotal(listaActual.idLista)">Total</a>
+		  <a ng-disabled="items.length==0" class="button icon-left ion-close button-dark" ng-click="showConfirmVaciar(listaActual.idLista)">Vaciar</a>
+		</div>
+		<h2 class="mensaje-vacio" ng-show="items.length==0">Lista vacia. Agregue un item!</h2>	
 		<ul class="list">	
-			<li class="item" ng-repeat="item in items track by item.idItem" index="item.idItem">		
+			<li class="item" ng-repeat="item in items track by item.idItem" index="item.idItem">
 				<ion-checkbox ng-model="item.checked" ng-change="tacharDestachar(item.idItem,item.checked)">{{item.nombre}}</ion-checkbox>
 				<span class="item-precio">{{item.precio}}</span>
 				<a class="button icono-borrar button-icon icon ion-trash-b" ng-click="showConfirmDelete(item.idItem)"></a>	
 			</li>	
 		</ul>	
-		<button ng-click="createModalItem()" class="pull-right button button-icon icon ion-plus-circled"></button>
+		<button ng-click="createModalItem()" class="pull-right button button-icon icon ion-plus-circled positive boton-agregar"></button>
 	</ion-content>
 </ion-view>

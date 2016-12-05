@@ -9828,3 +9828,20 @@ a.button {
 
 .icono-borrar {
   float: right; }
+
+.tacho-eliminar-lista {
+  display: inline-block;
+  float: right; }
+
+.titulo-lista {
+  display: inline-block; }
+
+.mensaje-vacio {
+  font-size: 16px;
+  text-align: center; }
+
+.boton-agregar:before {
+  font-size: 40px !important; }
+
+.boton-agregar {
+  float: right !important; }
