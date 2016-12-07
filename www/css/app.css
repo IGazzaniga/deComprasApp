@@ -9815,19 +9815,57 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
+.div-item {
+  height: 50px; }
+
 .item-nombre {
   display: inline;
   font-size: 15px;
   font-weight: bold; }
 
-.item-precio {
-  display: inline;
-  float: right;
-  color: red;
-  margin-right: 10px; }
+.precio {
+  margin-right: 40px; }
 
 .icono-borrar {
-  float: right; }
+  float: right;
+  position: relative;
+  bottom: 15px; }
+
+.check {
+  display: none; }
+
+.check + .label-check {
+  cursor: pointer; }
+
+.label-check:before {
+  display: inline-block;
+  font-family: "Ionicons";
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  text-rendering: auto;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "";
+  background: transparent;
+  border: 2px solid #387ef5;
+  border-radius: 100%;
+  height: 25px;
+  margin-right: 20px;
+  text-align: center;
+  vertical-align: middle;
+  width: 25px;
+  position: relative;
+  bottom: 3px; }
+
+.check:checked + .label-check:before {
+  content: "";
+  font-size: 22px;
+  color: #387ef5;
+  font-family: "Ionicons"; }
 
 .tacho-eliminar-lista {
   display: inline-block;
@@ -9838,7 +9876,8 @@ a.button {
 
 .mensaje-vacio {
   font-size: 16px;
-  text-align: center; }
+  text-align: center;
+  padding: 15px 0; }
 
 .boton-agregar:before {
   font-size: 40px !important; }

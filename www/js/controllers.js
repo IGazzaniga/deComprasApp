@@ -183,6 +183,7 @@ angular.module('starter.controllers', [])
 
 	 $scope.addItem = function(item) {
 	 	$scope.saveItem($stateParams,item);
+	 	item.nombre='';
 	 	$scope.modal.remove();
 	 };
 
