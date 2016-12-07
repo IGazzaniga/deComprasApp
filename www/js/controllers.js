@@ -270,3 +270,11 @@ angular.module('starter.controllers', [])
 	};
 
 }])
+
+.controller('MisListasCompCtrl', ['$scope', '$firebaseObject', function($scope, $firebaseObject){
+
+}])
+
+.controller('LoginCtrl', ['$scope', '$firebaseAuth', function($scope, $firebaseAuth){
+
+}])

@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'angular-websql'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'angular-websql', 'firebase'])
 
 .run(['$ionicPlatform', function($ionicPlatform) {
 
@@ -22,6 +22,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyCApY3KncwgAc-9eHhwdw1_XoBfubdCVWM",
+      authDomain: "de-compras-b2bfc.firebaseapp.com",
+      databaseURL: "https://de-compras-b2bfc.firebaseio.com",
+      storageBucket: "de-compras-b2bfc.appspot.com",
+      messagingSenderId: "955671816280"
+    };
+    firebase.initializeApp(config);
 
   });
 }])
@@ -61,6 +71,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       'content': {
         templateUrl: 'templates/lista.html',
         controller: 'ListaCtrl'
+      }
+    }  
+  })
+
+  .state('main.login', {
+    url: '/login',
+    views: {
+      'content': {
+        templateUrl: 'templates/login.html',
+        controller: 'LoginCtrl'
       }
     }  
   })
