@@ -23,6 +23,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       StatusBar.styleDefault();
     }
 
+
+
     // Initialize Firebase
     var config = {
       apiKey: "AIzaSyCApY3KncwgAc-9eHhwdw1_XoBfubdCVWM",
@@ -31,6 +33,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       storageBucket: "de-compras-b2bfc.appspot.com",
       messagingSenderId: "955671816280"
     };
+    
     firebase.initializeApp(config);
 
   });

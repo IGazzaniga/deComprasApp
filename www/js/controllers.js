@@ -276,5 +276,17 @@ angular.module('starter.controllers', [])
 }])
 
 .controller('LoginCtrl', ['$scope', '$firebaseAuth', function($scope, $firebaseAuth){
+  
+  	var auth = $firebaseAuth();
+
+  	// login with Facebook
+  	$scope.login = function() {
+  		auth.$signInWithPopup("facebook").then(function(firebaseUser) {
+	    	console.log("Signed in as:", firebaseUser.uid);
+	    	console.log(firebaseUser);
+	  	}).catch(function(error) {
+	    	console.log("Authentication failed:", error);
+	  	});
+  	};
 
 }])
