@@ -9874,6 +9874,10 @@ a.button {
 .titulo-lista {
   display: inline-block; }
 
+.footer-mislistas {
+  position: absolute;
+  bottom: 50px; }
+
 .mensaje-vacio {
   font-size: 16px;
   text-align: center;
