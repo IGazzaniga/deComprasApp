@@ -275,14 +275,16 @@ angular.module('starter.controllers', [])
 
 }])
 
-.controller('LoginCtrl', ['$scope', '$firebaseAuth', function($scope, $firebaseAuth){
+.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseObject', '$firebaseArray', function($scope, $firebaseAuth, $firebaseObject, $firebaseArray){
   
   	var auth = $firebaseAuth();
+  	var ref = firebase.database().ref('Users');
+    var users = $firebaseArray(ref);
 
   	// login with Facebook
   	$scope.login = function() {
   		auth.$signInWithPopup("facebook").then(function(firebaseUser) {
-	    	console.log("Signed in as:", firebaseUser.uid);
+	    	console.log("Signed in as:", firebaseUser.user.displayName);
 	    	console.log(firebaseUser);
 	  	}).catch(function(error) {
 	    	console.log("Authentication failed:", error);
