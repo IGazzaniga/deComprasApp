@@ -281,15 +281,14 @@ angular.module('starter.controllers', [])
   	// login with Facebook
   	$scope.login = function() {
   		auth.$signInWithPopup("facebook").then(function(firebaseUser) {
-  			var user = {
-  				"name": firebaseUser.user.displayName,
-  				"email": firebaseUser.user.email,
-  				"photo": firebaseUser.user.photoURL
-  			};
-  			/*if(!users.include(user)){
+  			if(auth.$getAuth().uid != firebaseUser.user.uid){
+  				var user = {
+	  				"name": firebaseUser.user.displayName,
+	  				"email": firebaseUser.user.email,
+	  				"photo": firebaseUser.user.photoURL
+	  			};
   				users.$add(user);
-  			}*/
-  			users.$add(user);
+  			}
   			$state.go("main.listasComp");
 	  	}).catch(function(error) {
 	    	console.log("Authentication failed:", error);
