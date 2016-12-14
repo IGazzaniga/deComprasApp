@@ -271,17 +271,13 @@ angular.module('starter.controllers', [])
 
 }])
 
-.controller('MisListasCompCtrl', ['$scope', '$firebaseObject', function($scope, $firebaseObject){
-
-}])
-
-.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseObject', '$firebaseArray', function($scope, $firebaseAuth, $firebaseObject, $firebaseArray){
+.controller('LoginCtrl', ['$scope', '$state', '$firebaseAuth', '$firebaseObject', '$firebaseArray', function($scope, $state, $firebaseAuth, $firebaseObject, $firebaseArray){
   
   	var auth = $firebaseAuth();
   	var ref = firebase.database().ref();
     var usersRef = ref.child('Users');
     var users = $firebaseArray(usersRef);
-
+    
   	// login with Facebook
   	$scope.login = function() {
   		auth.$signInWithPopup("facebook").then(function(firebaseUser) {
@@ -290,10 +286,21 @@ angular.module('starter.controllers', [])
   				"email": firebaseUser.user.email,
   				"photo": firebaseUser.user.photoURL
   			};
+  			/*if(!users.include(user)){
+  				users.$add(user);
+  			}*/
   			users.$add(user);
-  			$scope.users = users;
+  			$state.go("main.listasComp");
 	  	}).catch(function(error) {
 	    	console.log("Authentication failed:", error);
 	  	});
   	};
+}])
+
+.controller('MisListasCompCtrl', ['$scope', '$state', '$firebaseAuth', '$firebaseObject', '$firebaseArray', function($scope, $state, $firebaseAuth, $firebaseObject, $firebaseArray){
+  
+  	var ref = firebase.database().ref();
+    var usersRef = ref.child('Users');
+	$scope.usersList = $firebaseArray(usersRef);
+
 }])

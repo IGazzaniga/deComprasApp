@@ -88,6 +88,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     }  
   })
 
+  .state('main.listasComp', {
+    url: '/listas-comp',
+    views: {
+      'content': {
+        templateUrl: 'templates/listas-comp.html',
+        controller: 'MisListasCompCtrl'
+      }
+    }  
+  })
+
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/main/listas');
 
