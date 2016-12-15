@@ -66,4 +66,14 @@ angular.module('starter.services', [])
     }
 
   };
+
 }])
+
+.factory('ListasComp', [function() {
+
+  return {
+
+  };
+}])
+
+

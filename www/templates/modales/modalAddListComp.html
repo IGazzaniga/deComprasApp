@@ -1,0 +1,21 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive">
+    <h1 class="title">Nueva Lista Compartida</h1>
+    <button class="button button-clear button-primary" ng-click="modal.remove()">X</button>
+  </ion-header-bar>
+  <ion-content>
+    <div class="list">
+      <label class="item item-input item-floating-label">
+        <span class="input-label">Titulo</span>
+        <input ng-model="nuevaListaComp.nombre" type="text" placeholder="Titulo">
+      </label>
+      <label class="item item-input item-floating-label">
+        <span class="input-label">Detalles</span>
+        <input ng-model="nuevaListaComp.detalle" type="text" placeholder="Detalles">
+      </label>
+      <button ng-click="addListComp(nuevaListaComp)" class="button button-block button-positive">
+        Guardar
+      </button>
+    </div>
+  </ion-content>
+</ion-modal-view>

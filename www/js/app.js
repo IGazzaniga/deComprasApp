@@ -70,6 +70,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
   .state('main.lista', {
     url: '/lista/:listaId',
+    cache: false,
     views: {
       'content': {
         templateUrl: 'templates/lista.html',
@@ -80,6 +81,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
   .state('main.login', {
     url: '/login',
+    cache: false,
     views: {
       'content': {
         templateUrl: 'templates/login.html',
@@ -88,12 +90,24 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     }  
   })
 
-  .state('main.listasComp', {
-    url: '/listas-comp',
+  .state('main.mis-listasComp', {
+    url: '/listas-comp/:userId',
+    cache: false,
     views: {
       'content': {
         templateUrl: 'templates/listas-comp.html',
         controller: 'MisListasCompCtrl'
+      }
+    }  
+  })
+
+  .state('main.listaComp', {
+    url: '/lista-comp/:listaCompId',
+    cache: false,
+    views: {
+      'content': {
+        templateUrl: 'templates/lista-comp.html',
+        controller: 'ListaCompCtrl'
       }
     }  
   })

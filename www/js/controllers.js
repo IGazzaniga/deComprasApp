@@ -71,13 +71,14 @@ angular.module('starter.controllers', [])
 
 	$scope.loadList();
 
-  	$scope.createModalList = function() {
+
+	$scope.createModalList = function() {
 	  $ionicModal.fromTemplateUrl('templates/modales/modalAddList.html', {
-	    scope: $scope
-	  }).then(function(modal) {
-	    $scope.modal = modal;
-	    $scope.modal.show();
-	  });
+        scope: $scope
+      }).then(function(modal) {
+        $scope.modal = modal;
+        $scope.modal.show();
+      });
 	};
 
 	 $scope.nuevaLista= {
@@ -276,7 +277,11 @@ angular.module('starter.controllers', [])
   	var auth = $firebaseAuth();
   	var ref = firebase.database().ref();
     var usersRef = ref.child('Users');
-    var users = $firebaseArray(usersRef);
+    $scope.users = $firebaseArray(usersRef);
+
+    if (auth.$getAuth()) {
+    	$state.go("main.mis-listasComp",{userId: auth.$getAuth().uid});
+    };
     
   	// login with Facebook
   	$scope.login = function() {
@@ -287,19 +292,59 @@ angular.module('starter.controllers', [])
 	  				"email": firebaseUser.user.email,
 	  				"photo": firebaseUser.user.photoURL
 	  			};
-  				users.$add(user);
+  				$scope.users.$add(user);
   			}
-  			$state.go("main.listasComp");
+  			$state.go("main.mis-listasComp", {userId: firebaseUser.user.uid});
 	  	}).catch(function(error) {
 	    	console.log("Authentication failed:", error);
 	  	});
   	};
+
 }])
 
-.controller('MisListasCompCtrl', ['$scope', '$state', '$firebaseAuth', '$firebaseObject', '$firebaseArray', function($scope, $state, $firebaseAuth, $firebaseObject, $firebaseArray){
+.controller('MisListasCompCtrl', ['$scope', '$state', '$stateParams', '$firebaseAuth', '$firebaseObject', '$firebaseArray', '$ionicModal', function($scope, $state, $stateParams, $firebaseAuth, $firebaseObject, $firebaseArray, $ionicModal){
   
   	var ref = firebase.database().ref();
+  	var auth = $firebaseAuth();
     var usersRef = ref.child('Users');
-	$scope.usersList = $firebaseArray(usersRef);
+    var listasRef = ref.child('Listas');
+    var itemsRef = ref.child('Items');
+	$scope.usersArray = $firebaseArray(usersRef);
+	$scope.listasCompArray = $firebaseArray(listasRef);
+	$scope.itemsArray = $firebaseArray(itemsRef);
+
+	$scope.logout = function() {
+  		auth.$signOut().then(function(){
+  			$state.go("main.login");
+  		})
+  	};
+
+	$scope.createModalListComp = function() {
+	  $ionicModal.fromTemplateUrl('templates/modales/modalAddListComp.html', {
+        scope: $scope
+      }).then(function(modal) {
+        $scope.modal = modal;
+        $scope.modal.show();
+      });
+	};
+
+	$scope.addListComp = function(nuevaListaComp) {
+		$scope.listasCompArray.$add(nuevaListaComp);
+		$scope.modal.remove();
+	};
 
 }])
+
+.controller('ListaCompCtrl', ['$scope', '$state', '$stateParams', '$firebaseAuth', '$firebaseObject', '$firebaseArray', '$ionicModal', function($scope, $state, $stateParams, $firebaseAuth, $firebaseObject, $firebaseArray, $ionicModal){
+  
+  	var ref = firebase.database().ref();
+  	var auth = $firebaseAuth();
+    var usersRef = ref.child('Users');
+    var listaRef = ref.child('Listas/' + $stateParams.listaCompId);
+    var itemsRef = ref.child('Items');
+	$scope.usersArray = $firebaseArray(usersRef);
+	$scope.listaActualComp = $firebaseObject(listaRef);
+	$scope.itemsArray = $firebaseArray(itemsRef);
+
+}])
+
