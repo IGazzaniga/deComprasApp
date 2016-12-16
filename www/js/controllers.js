@@ -276,8 +276,8 @@ angular.module('starter.controllers', [])
   
   	var auth = $firebaseAuth();
   	var ref = firebase.database().ref();
-    var usersRef = ref.child('Users');
-    $scope.users = $firebaseArray(usersRef);
+  	var allUsersRef = ref.child('Users');
+    var usersDB = $firebaseArray(allUsersRef);
 
     if (auth.$getAuth()) {
     	$state.go("main.mis-listasComp",{userId: auth.$getAuth().uid});
@@ -286,12 +286,15 @@ angular.module('starter.controllers', [])
   	// login with Facebook
   	$scope.login = function() {
   		auth.$signInWithPopup("facebook").then(function(firebaseUser) {
-  			if(auth.$getAuth().uid != firebaseUser.user.uid){
+  			if(usersDB.$getRecord(firebaseUser.user.uid) === null){
   				var user = {
 	  				"name": firebaseUser.user.displayName,
 	  				"email": firebaseUser.user.email,
-	  				"photo": firebaseUser.user.photoURL
+	  				"photo": firebaseUser.user.photoURL,
+	  				"misListas": []
 	  			};
+	  			var userRef = ref.child('Users/' + firebaseUser.user.uid);
+	  			$scope.users = $firebaseArray(userRef);
   				$scope.users.$add(user);
   			}
   			$state.go("main.mis-listasComp", {userId: firebaseUser.user.uid});
@@ -306,12 +309,8 @@ angular.module('starter.controllers', [])
   
   	var ref = firebase.database().ref();
   	var auth = $firebaseAuth();
-    var usersRef = ref.child('Users');
-    var listasRef = ref.child('Listas');
-    var itemsRef = ref.child('Items');
-	$scope.usersArray = $firebaseArray(usersRef);
-	$scope.listasCompArray = $firebaseArray(listasRef);
-	$scope.itemsArray = $firebaseArray(itemsRef);
+    var misListas = ref.child('Users/' + $stateParams.userId + '/misListas');
+    $scope.misListasComp = $firebaseArray(misListas);
 
 	$scope.logout = function() {
   		auth.$signOut().then(function(){
@@ -329,7 +328,9 @@ angular.module('starter.controllers', [])
 	};
 
 	$scope.addListComp = function(nuevaListaComp) {
-		$scope.listasCompArray.$add(nuevaListaComp);
+		nuevaListaComp.userIdCreator = $stateParams.userId;
+		nuevaListaComp.members = [$stateParams.userId];
+		$scope.misListasComp.$add(nuevaListaComp);
 		$scope.modal.remove();
 	};
 
