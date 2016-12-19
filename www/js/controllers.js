@@ -108,7 +108,7 @@ angular.module('starter.controllers', [])
 	    });
 	  }
 
-	  	// Confirm para borrar item
+	  	// Confirm para borrar lista
 	 $scope.showConfirmDeleteList = function(idList) {
 	   var confirmPopup = $ionicPopup.confirm({
 	     title: 'Borrar lista',
@@ -305,7 +305,7 @@ angular.module('starter.controllers', [])
 
 }])
 
-.controller('MisListasCompCtrl', ['$scope', '$state', '$stateParams', '$firebaseAuth', '$firebaseObject', '$firebaseArray', '$ionicModal', function($scope, $state, $stateParams, $firebaseAuth, $firebaseObject, $firebaseArray, $ionicModal){
+.controller('MisListasCompCtrl', ['$scope', '$state', '$stateParams', '$firebaseAuth', '$firebaseObject', '$firebaseArray', '$ionicModal', '$ionicPopup', function($scope, $state, $stateParams, $firebaseAuth, $firebaseObject, $firebaseArray, $ionicModal, $ionicPopup){
   
   	var ref = firebase.database().ref();
   	var auth = $firebaseAuth();
@@ -316,19 +316,13 @@ angular.module('starter.controllers', [])
   	var listas = $firebaseArray(listasRef);
   	$scope.userData = $firebaseObject(myUserData);
 
-  	$scope.cargarMisListas = function() {
-  		$scope.misListas = [];
-  		myListIds.$loaded().then(function(x){
-	    	for (var i = 0; i < x.length; i++) {
-		  		var listaRef = listasRef.child(x[i].$value);
-		  		$scope.misListas.push($firebaseObject(listaRef)); 
-	  		}		
-	  	})
-  	};
-
-  	$scope.cargarMisListas();
-
-
+	$scope.misListas = [];
+	myListIds.$loaded().then(function(x){
+		for (var i = 0; i < x.length; i++) {
+	  		var listaRef = listasRef.child(x[i].$value);
+	  		$scope.misListas.push($firebaseObject(listaRef)); 
+		}		
+	});
 
 	$scope.logout = function() {
   		auth.$signOut().then(function(){
@@ -355,10 +349,39 @@ angular.module('starter.controllers', [])
 			}
 			$scope.userData.misListas.push(ref.key);
 			$scope.userData.$save();
-			$scope.cargarMisListas(); 
+
+			$scope.misListas.push($firebaseObject(listasRef.child(ref.key)));
 		});
 		$scope.modal.remove();
 	};
+
+	$scope.removeList = function(idList) {
+		var listaRemove = listas.$getRecord(idList);
+		listas.$remove(listaRemove);
+		var index = $scope.userData.misListas.indexOf(idList);
+		$scope.userData.misListas.splice(index, 1);
+		$scope.misListas.splice(index, 1);
+		$scope.userData.$save();
+	}
+
+		  	// Confirm para borrar lista
+	 $scope.showConfirmDeleteList = function(idList) {
+	   var confirmPopup = $ionicPopup.confirm({
+	     title: 'Borrar lista',
+	     template: 'Seguro desea borrar esta lista?',
+	     okText: 'SI',
+	     cancelText: 'NO'
+	   });
+
+	   confirmPopup.then(function(res) {
+	     if(res) {
+	       $scope.removeList(idList);
+	     } else {
+	       console.log('You are not sure');
+	     }
+	   });
+	 };
+
 
 }])
 
