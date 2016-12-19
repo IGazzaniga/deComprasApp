@@ -272,12 +272,11 @@ angular.module('starter.controllers', [])
 
 }])
 
-.controller('LoginCtrl', ['$scope', '$state', '$firebaseAuth', '$firebaseObject', '$firebaseArray', function($scope, $state, $firebaseAuth, $firebaseObject, $firebaseArray){
+.controller('LoginCtrl', ['$scope', '$state', '$firebaseAuth', function($scope, $state, $firebaseAuth){
   
   	var auth = $firebaseAuth();
   	var ref = firebase.database().ref();
-  	var allUsersRef = ref.child('Users');
-    var usersDB = $firebaseArray(allUsersRef);
+  	var UsersRef = ref.child('Users');
 
     if (auth.$getAuth()) {
     	$state.go("main.mis-listasComp",{userId: auth.$getAuth().uid});
@@ -286,17 +285,18 @@ angular.module('starter.controllers', [])
   	// login with Facebook
   	$scope.login = function() {
   		auth.$signInWithPopup("facebook").then(function(firebaseUser) {
-  			if(usersDB.$getRecord(firebaseUser.user.uid) === null){
-  				var user = {
-	  				"name": firebaseUser.user.displayName,
-	  				"email": firebaseUser.user.email,
-	  				"photo": firebaseUser.user.photoURL,
-	  				"misListas": []
-	  			};
-	  			var userRef = ref.child('Users/' + firebaseUser.user.uid);
-	  			$scope.users = $firebaseArray(userRef);
-  				$scope.users.$add(user);
-  			}
+  			var myUser = ref.child('Users/' + firebaseUser.user.uid);
+  			myUser.on('value', function(snapshot) {
+			    if(snapshot.val() === null){
+		  			var userRef = ref.child('Users/' + firebaseUser.user.uid);
+		  			userRef.set({
+						"name": firebaseUser.user.displayName,
+		  				"email": firebaseUser.user.email,
+		  				"photo": firebaseUser.user.photoURL,
+		  				"misListas": []
+		  			});
+	  			}
+			});
   			$state.go("main.mis-listasComp", {userId: firebaseUser.user.uid});
 	  	}).catch(function(error) {
 	    	console.log("Authentication failed:", error);
@@ -309,8 +309,26 @@ angular.module('starter.controllers', [])
   
   	var ref = firebase.database().ref();
   	var auth = $firebaseAuth();
-    var misListas = ref.child('Users/' + $stateParams.userId + '/misListas');
-    $scope.misListasComp = $firebaseArray(misListas);
+  	var myUserData = ref.child('Users/' + $stateParams.userId);
+  	var myListIdsRef = ref.child('Users/' + $stateParams.userId + '/misListas');
+  	var myListIds = $firebaseArray(myListIdsRef);
+  	var listasRef = ref.child('Listas');
+  	var listas = $firebaseArray(listasRef);
+  	$scope.userData = $firebaseObject(myUserData);
+
+  	$scope.cargarMisListas = function() {
+  		$scope.misListas = [];
+  		myListIds.$loaded().then(function(x){
+	    	for (var i = 0; i < x.length; i++) {
+		  		var listaRef = listasRef.child(x[i].$value);
+		  		$scope.misListas.push($firebaseObject(listaRef)); 
+	  		}		
+	  	})
+  	};
+
+  	$scope.cargarMisListas();
+
+
 
 	$scope.logout = function() {
   		auth.$signOut().then(function(){
@@ -330,22 +348,26 @@ angular.module('starter.controllers', [])
 	$scope.addListComp = function(nuevaListaComp) {
 		nuevaListaComp.userIdCreator = $stateParams.userId;
 		nuevaListaComp.members = [$stateParams.userId];
-		$scope.misListasComp.$add(nuevaListaComp);
+		nuevaListaComp.items = [];
+		listas.$add(nuevaListaComp).then(function(ref){
+			if ($scope.userData.misListas === undefined) {
+				$scope.userData.misListas = [];
+			}
+			$scope.userData.misListas.push(ref.key);
+			$scope.userData.$save();
+			$scope.cargarMisListas(); 
+		});
 		$scope.modal.remove();
 	};
 
 }])
 
-.controller('ListaCompCtrl', ['$scope', '$state', '$stateParams', '$firebaseAuth', '$firebaseObject', '$firebaseArray', '$ionicModal', function($scope, $state, $stateParams, $firebaseAuth, $firebaseObject, $firebaseArray, $ionicModal){
+.controller('ListaCompCtrl', ['$scope', '$state', '$stateParams', '$firebaseAuth', '$firebaseObject', '$ionicModal', function($scope, $state, $stateParams, $firebaseAuth, $firebaseObject, $ionicModal){
   
   	var ref = firebase.database().ref();
   	var auth = $firebaseAuth();
-    var usersRef = ref.child('Users');
-    var listaRef = ref.child('Listas/' + $stateParams.listaCompId);
-    var itemsRef = ref.child('Items');
-	$scope.usersArray = $firebaseArray(usersRef);
-	$scope.listaActualComp = $firebaseObject(listaRef);
-	$scope.itemsArray = $firebaseArray(itemsRef);
+  	var listaRef = ref.child('Listas/' + $stateParams.listaCompId);
+  	$scope.listaActual = $firebaseObject(listaRef);
 
 }])
 
