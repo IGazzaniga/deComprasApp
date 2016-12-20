@@ -1,0 +1,20 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive">
+    <h1 class="title">Nueva miembro</h1>
+    <button class="button button-clear button-primary" ng-click="modal.remove()">X</button>
+  </ion-header-bar>
+  <ion-content>
+    <div class="list">
+      <label class="item item-input item-floating-label">
+        <span class="input-label">Titulo</span>
+        <input ng-model="userSearch.name" ng-change="getUsers()" type="text" placeholder="Nombre del Usuario">
+      </label>
+      <ul>
+        <li ng-repeat="user in usersSearches track by $index">{{user.name}}</li>
+      </ul>
+      <button ng-click="addMember(user)" class="button button-block button-positive">
+        Agregar
+      </button>
+    </div>
+  </ion-content>
+</ion-modal-view>
