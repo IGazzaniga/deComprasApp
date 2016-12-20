@@ -5,7 +5,7 @@
 	    <h2 class="mensaje-vacio" ng-show="misListas.length == 0">Aun no tiene listas. Agregue una!</h2>
 		<div class="card" ng-hide="misListas.length == 0">
 		  <div ng-repeat="lista in misListas track by $index" class="item item-text-wrap">
-		  	<a href="" ui-sref="main.listaComp({listaCompId: lista.$id})">
+		  	<a href="" ui-sref="main.lista-remote({listaRemoteId: lista.$id})">
 		  		<h2 class="titulo-lista">{{lista.nombre}}</h2>
 		  	</a>
 		  	<a ng-click="showConfirmDeleteList(lista.$id)" class="button button-icon icon ion-trash-b tacho-eliminar-lista"></a>

@@ -4,14 +4,29 @@ var bower = require('bower');
 var concat = require('gulp-concat');
 var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
+var inject = require('gulp-inject');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
 
 var paths = {
-  sass: ['./scss/**/*.scss']
+  sass: ['./scss/**/*.scss'],
+  scripts: ['./www/scripts/**/*.js'],
+  views: {
+    main: './www/index.html',
+    files: ['./www/scripts/modules/**/views/**/*.html']
+  }
 };
 
-gulp.task('default', ['sass']);
+gulp.task('default', ['sass','inject']);
+
+gulp.task('inject', function () {
+  var target = gulp.src('www/index.html');
+  var jsSources = gulp.src(['www/scripts/**/*.js'], {read: false});
+  var cssSources = gulp.src(['www/css/*.min.css'], {read: false});
+  return target.pipe(inject(jsSources, {relative: true}))
+    .pipe(inject(cssSources, {relative: true}))
+    .pipe(gulp.dest('www'));
+});
 
 gulp.task('sass', function(done) {
   gulp.src('./scss/**/*.scss')
