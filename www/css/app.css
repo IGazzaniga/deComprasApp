@@ -9888,3 +9888,8 @@ a.button {
 
 .boton-agregar {
   float: right !important; }
+
+.foto-user {
+  width: 30%;
+  vertical-align: middle;
+  margin-right: 20px; }

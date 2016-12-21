@@ -5,14 +5,8 @@
   </ion-header-bar>
   <ion-content>
     <div class="list">
-      <label class="item item-input item-floating-label">
-        <span class="input-label">Titulo</span>
-        <input ng-model="userSearch.name" ng-change="getUsers()" type="text" placeholder="Nombre del Usuario">
-      </label>
-      <ul>
-        <li ng-repeat="user in usersSearches track by $index">{{user.name}}</li>
-      </ul>
-      <button ng-click="addMember(user)" class="button button-block button-positive">
+      <ion-select label="Nombre del Usuario" label-img="photo" label-text="name" provider="allUsers" ng-model="userSearch.name"/>
+      <button ng-click="addMember()" class="button button-block button-positive">
         Agregar
       </button>
     </div>
