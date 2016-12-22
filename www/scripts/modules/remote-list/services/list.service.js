@@ -27,8 +27,7 @@
         }
 
         function remove(list) {
-          var listas = $firebaseArray(DataBaseService.listas);
-          listas.$remove(list);
+          return $firebaseObject(DataBaseService.listas.child(list.$id)).$remove();
         }
 
         function sacarMember(listId, userId) {

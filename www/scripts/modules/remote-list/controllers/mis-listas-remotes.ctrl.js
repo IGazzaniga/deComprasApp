@@ -6,7 +6,9 @@ angular.module('deComprasApp.remote-list')
 
 	  	$scope.misListas = UserService.getListsByUserId(userId);
 	  			  	
-	  	$scope.userData = UserService.getUserById(userId);
+	  	UserService.getUserById(userId).then(function(user){
+	  		$scope.userData = user;
+	  	});
 
 		$scope.logout = function() {
 	  		AuthService.logout().then(function(){
@@ -29,23 +31,24 @@ angular.module('deComprasApp.remote-list')
 			nuevaListaComp.members[userId] = true;
 			nuevaListaComp.items = [];
 			ListService.add(nuevaListaComp).then(function(data){
-	            UserService.asignarLista(data.key);
-	            $scope.misListas.push(ListService.getById(data.key));
+	            UserService.asignarLista(data.key, userId);
+	            ListService.getById(data.key).then(function(list){
+	            	$scope.misListas.push(list);
+	            });
 	        });
 			$scope.modal.remove();
 		};
 
-/*		$scope.removeList = function(idList) {
-			var listaRemove = listas.$getRecord(idList);
-			listas.$remove(listaRemove);
-			var index = $scope.userData.misListas.indexOf(idList);
-			$scope.userData.misListas.splice(index, 1);
-			$scope.misListas.splice(index, 1);
-			$scope.userData.$save();
+		$scope.removeList = function(List) {
+			ListService.remove(List).then(function(data){
+				UserService.sacarLista(userId, List.$id).then(function(ref){
+					$scope.misListas = UserService.getListsByUserId(userId);
+				});
+			});
 		}
 
 			  	// Confirm para borrar lista
-		 $scope.showConfirmDeleteList = function(idList) {
+		 $scope.showConfirmDeleteList = function(List) {
 		   var confirmPopup = $ionicPopup.confirm({
 		     title: 'Borrar lista',
 		     template: 'Seguro desea borrar esta lista?',
@@ -55,10 +58,10 @@ angular.module('deComprasApp.remote-list')
 
 		   confirmPopup.then(function(res) {
 		     if(res) {
-		       $scope.removeList(idList);
+		       $scope.removeList(List);
 		     } else {
 		       console.log('You are not sure');
 		     }
 		   });
-		 };*/
+		 };
 }])

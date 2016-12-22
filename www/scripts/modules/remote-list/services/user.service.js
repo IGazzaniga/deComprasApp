@@ -50,8 +50,7 @@
       }
 
       function sacarLista(uid, listId) {
-        var misListas = $firebaseObject(DataBaseService.users.child(uid).child('misListas'));
-        misListas.listId.$remove();
+        return $firebaseObject(DataBaseService.users.child(uid).child('misListas').child(listId)).$remove();     
       }    
 
       var service = {
