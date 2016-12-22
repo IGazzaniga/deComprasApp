@@ -1,27 +1,17 @@
 angular.module('deComprasApp.remote-list')
-	.controller('MisListasRemotesCtrl', ['$scope', '$state', '$stateParams', '$firebaseAuth', '$firebaseObject', '$firebaseArray', '$ionicModal', '$ionicPopup', function($scope, $state, $stateParams, $firebaseAuth, $firebaseObject, $firebaseArray, $ionicModal, $ionicPopup){
-	  
-	  	var ref = firebase.database().ref();
-	  	var auth = $firebaseAuth();
-	  	var myUserData = ref.child('Users/' + $stateParams.userId);
-	  	var myListIdsRef = ref.child('Users/' + $stateParams.userId + '/misListas');
-	  	var myListIds = $firebaseArray(myListIdsRef);
-	  	var listasRef = ref.child('Listas');
-	  	var listas = $firebaseArray(listasRef);
-	  	$scope.userData = $firebaseObject(myUserData);
+	.controller('MisListasRemotesCtrl', ['$scope', '$state', '$stateParams', 'AuthService', 'UserService', 'ListService', '$ionicModal', '$ionicPopup', 
+		function($scope, $state, $stateParams, AuthService, UserService, ListService, $ionicModal, $ionicPopup){
+	  	
+	  	var userId = $stateParams.userId;
 
-		$scope.misListas = [];
-		myListIds.$loaded().then(function(x){
-			for (var i = 0; i < x.length; i++) {
-		  		var listaRef = listasRef.child(x[i].$value);
-		  		$scope.misListas.push($firebaseObject(listaRef)); 
-			}		
-		});
+	  	$scope.misListas = UserService.getListsByUserId(userId);
+	  			  	
+	  	$scope.userData = UserService.getUserById(userId);
 
 		$scope.logout = function() {
-	  		auth.$signOut().then(function(){
+	  		AuthService.logout().then(function(){
 	  			$state.go("main.login");
-	  		})
+	  		});
 	  	};
 
 		$scope.createModalListComp = function() {
@@ -34,22 +24,18 @@ angular.module('deComprasApp.remote-list')
 		};
 
 		$scope.addListComp = function(nuevaListaComp) {
-			nuevaListaComp.userIdCreator = $stateParams.userId;
-			nuevaListaComp.members = [$stateParams.userId];
+			nuevaListaComp.userIdCreator = userId;
+			nuevaListaComp.members = {};
+			nuevaListaComp.members[userId] = true;
 			nuevaListaComp.items = [];
-			listas.$add(nuevaListaComp).then(function(ref){
-				if ($scope.userData.misListas === undefined) {
-					$scope.userData.misListas = [];
-				}
-				$scope.userData.misListas.push(ref.key);
-				$scope.userData.$save();
-
-				$scope.misListas.push($firebaseObject(listasRef.child(ref.key)));
-			});
+			ListService.add(nuevaListaComp).then(function(data){
+	            UserService.asignarLista(data.key);
+	            $scope.misListas.push(ListService.getById(data.key));
+	        });
 			$scope.modal.remove();
 		};
 
-		$scope.removeList = function(idList) {
+/*		$scope.removeList = function(idList) {
 			var listaRemove = listas.$getRecord(idList);
 			listas.$remove(listaRemove);
 			var index = $scope.userData.misListas.indexOf(idList);
@@ -74,5 +60,5 @@ angular.module('deComprasApp.remote-list')
 		       console.log('You are not sure');
 		     }
 		   });
-		 };
+		 };*/
 }])

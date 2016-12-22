@@ -1,29 +1,27 @@
 angular.module('deComprasApp.remote-list')
-	.controller('ListaRemoteCtrl', ['$scope', '$ionicSideMenuDelegate', '$ionicPopup', '$state', '$stateParams', '$firebaseAuth', '$firebaseObject', '$firebaseArray', '$ionicModal', 
-		function($scope, $ionicSideMenuDelegate, $ionicPopup, $state, $stateParams, $firebaseAuth, $firebaseObject, $firebaseArray, $ionicModal){
-	  
-	  	var ref = firebase.database().ref();
-	  	var auth = $firebaseAuth();
-	  	var listaRef = ref.child('Listas/' + $stateParams.listaRemoteId);
-	  	$scope.listaActual = $firebaseObject(listaRef)	
-	  	$scope.listaActual.$loaded().then(function(){
-	  		$scope.listaActual.users = [];
-	  	});
-  		var membersRef = listaRef.child('members');
-		$firebaseArray(membersRef).$loaded().then(function(x){
-			$scope.members = x;
-			angular.forEach($scope.members, function(user){
-				$firebaseObject(ref.child('Users/' + user.$value)).$loaded().then(function(x){
-					$scope.listaActual.users.push(x);
-				})
-			});
-		});
-	  	$firebaseArray(listaRef.child('items')).$loaded().then(function(x){
-	  		$scope.listaActual.items = x;
-	  	});
-	  	$firebaseArray(ref.child('Users')).$loaded().then(function(x){
-	  		$scope.allUsers = x;
-	  	});
+	.controller('ListaRemoteCtrl', ['$scope', '$ionicSideMenuDelegate', '$ionicPopup', '$ionicModal', '$state', '$stateParams', 'UserService', 'ListService', '$firebaseArray', 
+		function($scope, $ionicSideMenuDelegate, $ionicPopup, $ionicModal, $state, $stateParams, UserService, ListService){
+	 
+
+	  	ListService.getById($stateParams.listaRemoteId).then(function(data){
+	  		$scope.listaActual = data;
+	  		ListService.getMembers($stateParams.listaRemoteId).then(function(data){
+	  			$scope.listaActual.users = [];
+	  			angular.forEach(data, function(value, key){
+	  				UserService.getUserById(key).then(function(user){
+	  					$scope.listaActual.users.push(user);
+	  				})
+	  			})
+	  		});
+	  		ListService.getItems($stateParams.listaRemoteId).then(function(data){
+	  			$scope.listaActual.items = data;
+	  		});
+	  	});	
+
+	  	UserService.getAll().then(function(data){
+	  		$scope.allUsers = data;
+	  	})
+	  		
 	  	$scope.userSearch = {};
 
 	  	$scope.toggleLeft = function() {
@@ -39,11 +37,28 @@ angular.module('deComprasApp.remote-list')
 		  });
 		};
 
+		$scope.createModalItem = function() {
+			$ionicModal.fromTemplateUrl('scripts/modules/remote-list/views/modals/modalAddItem.html', {
+			    scope: $scope
+			}).then(function(modal) {
+			    $scope.modal = modal;
+			    $scope.modal.show();
+			});
+		};
+
+		$scope.addItem = function(item) {
+			item.precio = 0;
+			item.checked = false;
+			ListService.addItem($stateParams.listaRemoteId, item).then(function(data){
+				$scope.modal.remove();
+			});
+		};
+
 		$scope.addMember = function() {
 			if (!angular.equals($scope.userSearch, {}) && $scope.userSearch.name !== '') {
 				var existe = false;
-				angular.forEach($scope.members, function(userId){
-					if (userId.$value === $scope.userSearch.name.$id) {
+				angular.forEach($scope.listaActual.users, function(user){
+					if (user.$id === $scope.userSearch.name.$id) {
 						existe = true;
 						$ionicPopup.alert({
 					       title: 'Atención!',
@@ -60,17 +75,13 @@ angular.module('deComprasApp.remote-list')
 					}
 				})
 				if (!existe) {
-					$scope.members.$add($scope.userSearch.name.$id).then(function(data){
-						$firebaseObject(ref.child('Users/' + $scope.userSearch.name.$id)).$loaded().then(function(x){
-							$scope.listaActual.users.push(x);
-						})
-						var ListsRef = ref.child('Users/' + $scope.userSearch.name.$id + '/misListas');
-						$firebaseArray(ListsRef).$loaded().then(function(x){
-							$scope.misListas = x;
-							$scope.misListas.$add($scope.listaActual.$id);
+					ListService.getMembers($stateParams.listaRemoteId).then(function(membersIds){
+						membersIds[$scope.userSearch.name.$id] = true;
+						ListService.addMember(membersIds).then(function(member){
+							UserService.asignarLista($stateParams.listaRemoteId, $scope.userSearch.name.$id);
 							$scope.modal.remove();
 						});
-					});	
+					})
 				}
 			} else {
 				$ionicPopup.alert({
