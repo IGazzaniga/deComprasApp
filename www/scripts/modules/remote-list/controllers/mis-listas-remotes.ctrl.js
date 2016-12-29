@@ -40,12 +40,13 @@ angular.module('deComprasApp.remote-list')
 		};
 
 		$scope.removeList = function(List) {
-			ListService.remove(List).then(function(data){
-				UserService.sacarLista(userId, List.$id).then(function(ref){
+			ListService.getMembers(List.$id).then(function(members){
+				UserService.sacarLista(members, List.$id);
+				ListService.remove(List).then(function(data){
 					$scope.misListas = UserService.getListsByUserId(userId);
 				});
 			});
-		}
+		};
 
 			  	// Confirm para borrar lista
 		 $scope.showConfirmDeleteList = function(List) {

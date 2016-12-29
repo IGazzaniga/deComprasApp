@@ -3,8 +3,8 @@
 
   angular
     .module('deComprasApp.remote-list')
-    .factory('UserService', ['$firebaseArray', '$firebaseObject', 'AuthService', 'DataBaseService', 
-      function($firebaseArray, $firebaseObject, AuthService, DataBaseService){
+    .factory('UserService', ['$q', '$firebaseArray', '$firebaseObject', 'AuthService', 'DataBaseService', 
+      function($q, $firebaseArray, $firebaseObject, AuthService, DataBaseService){
 
       function getUserById(uid) {
         return $firebaseObject(DataBaseService.users.child(uid)).$loaded();
@@ -49,9 +49,14 @@
         })
       }
 
-      function sacarLista(uid, listId) {
-        return $firebaseObject(DataBaseService.users.child(uid).child('misListas').child(listId)).$remove();     
-      }    
+      function sacarLista(members, listId) {
+        var defered = $q.defer();
+        var promise = defered.promise;
+        angular.forEach(members, function(value, userId){
+          $firebaseObject(DataBaseService.users.child(userId).child('misListas').child(listId)).$remove();
+        });  
+        return promise; 
+      };    
 
       var service = {
         getUserById: getUserById,
