@@ -31,8 +31,8 @@
         }
 
         function sacarMember(listId, userId) {
-          var members = $firebaseObject(DataBaseService.listas.child(listId).child('members'));
-          members.userId.$remove();
+          var member = $firebaseObject(DataBaseService.listas.child(listId).child('members').child(userId));
+          return member.$remove();
         }    
 
         function addItem(listId, item) {

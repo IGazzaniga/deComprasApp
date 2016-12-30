@@ -1,4 +1,4 @@
-<ion-view view-title="">
+<ion-view view-title="{{listaActual.nombre}}">
   	<ion-side-menus>
 	  <ion-side-menu-content>
 		  	<div style="margin-top: 45px;" class="button-bar bar-dark">
@@ -15,6 +15,7 @@
 				</div>
 			</div>
 			<a ng-click="createModalMembers()" class="button icon-left ion-plus-circled button-dark">Agregar members</a>
+			<a ng-click="salirLista(listaActual.$id)" class="button">Salir de la lista</a>
 
 	  </ion-side-menu-content>
 

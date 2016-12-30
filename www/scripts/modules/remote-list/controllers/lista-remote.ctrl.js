@@ -1,7 +1,8 @@
 angular.module('deComprasApp.remote-list')
-	.controller('ListaRemoteCtrl', ['$scope', '$ionicSideMenuDelegate', '$ionicPopup', '$ionicModal', '$state', '$stateParams', 'UserService', 'ListService', '$firebaseArray', 
-		function($scope, $ionicSideMenuDelegate, $ionicPopup, $ionicModal, $state, $stateParams, UserService, ListService){
+	.controller('ListaRemoteCtrl', ['$scope', 'AuthService', '$ionicSideMenuDelegate', '$ionicPopup', '$ionicModal', '$state', '$stateParams', 'UserService', 'ListService', 
+		function($scope, AuthService, $ionicSideMenuDelegate, $ionicPopup, $ionicModal, $state, $stateParams, UserService, ListService){
 	 
+		var myUserId = AuthService.isLoggedIn().uid;
 
 	  	ListService.getById($stateParams.listaRemoteId).then(function(data){
 	  		$scope.listaActual = data;
@@ -27,6 +28,27 @@ angular.module('deComprasApp.remote-list')
 	  	$scope.toggleLeft = function() {
 		  $ionicSideMenuDelegate.toggleLeft();
 		};
+
+		$scope.salirLista = function(listId) {
+			var confirmPopup = $ionicPopup.confirm({
+		     title: 'Salir',
+		     template: 'Seguro desea salir de esta lista?',
+		     okText: 'SI',
+		     cancelText: 'NO'
+		   });
+
+		   confirmPopup.then(function(res) {
+		     if(res) {
+		       ListService.sacarMember(listId, myUserId).then(function(data){
+		       	UserService.sacarListaByUserId(myUserId, listId).then(function(data){
+		       		$state.go('main.mis-listas-remotes', {userId: myUserId});
+		       	});
+		       });
+		     } else {
+		       console.log('You are not sure');
+		     }
+		   });
+		}
 
 		$scope.createModalMembers = function() {
 		  $ionicModal.fromTemplateUrl('scripts/modules/remote-list/views/modals/modalAddMember.html', {

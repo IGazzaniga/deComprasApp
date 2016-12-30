@@ -58,14 +58,18 @@
         return promise; 
       };    
 
+      function sacarListaByUserId(userId, listId) {       
+        return $firebaseObject(DataBaseService.users.child(userId).child('misListas').child(listId)).$remove();
+      };
+
       var service = {
         getUserById: getUserById,
         getAll: getAll,
         getListsByUserId, getListsByUserId,
         saveUser: saveUser,
         asignarLista: asignarLista,
-        sacarLista: sacarLista
-
+        sacarLista: sacarLista,
+        sacarListaByUserId: sacarListaByUserId
       };
 
       return service;
