@@ -42,6 +42,30 @@
         function getItems(listId) {
           return $firebaseArray(DataBaseService.listas.child(listId).child('items')).$loaded();
         }
+
+        function vaciar(listId) {
+          return $firebaseObject(DataBaseService.listas.child(listId).child('items')).$remove();
+        }
+
+        function deleteItem(itemId, listId) {
+          return $firebaseObject(DataBaseService.listas.child(listId).child('items').child(itemId)).$remove();
+        }
+
+        function tacharItem(itemId, listId, precio) {
+          $firebaseObject(DataBaseService.listas.child(listId).child('items').child(itemId)).$loaded().then(function(item){
+            item.precio = precio;
+            item.checked = true;
+            return item.$save();
+          });
+        }
+
+        function destacharItem(itemId, listId) {
+          $firebaseObject(DataBaseService.listas.child(listId).child('items').child(itemId)).$loaded().then(function(item){
+            item.precio = 0;
+            item.checked = false;
+            return item.$save();
+          });
+        }
         
         var service = {
           add: add,
@@ -52,7 +76,11 @@
           addMember: addMember,
           sacarMember: sacarMember,
           getItems: getItems,
-          addItem: addItem
+          addItem: addItem,
+          vaciar: vaciar,
+          deleteItem: deleteItem,
+          tacharItem: tacharItem,
+          destacharItem, destacharItem
         };
 
         return service;

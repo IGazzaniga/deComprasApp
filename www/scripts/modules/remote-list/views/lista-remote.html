@@ -4,17 +4,17 @@
 		  	<div style="margin-top: 45px;" class="button-bar bar-dark">
 			  <a ng-disabled="listaActual.items.length==0" class="button icon-left ion-information-circled button-dark" ng-click="showTotal(listaActual.$id)">Total</a>
 			  <a ng-click="createModalItem()" class="button icon-left ion-plus-circled button-dark">Agregar</a>
-			  <a ng-disabled="listaActual.items.length==0" class="button icon-left ion-close button-dark" ng-click="showConfirmVaciar(listaActual.$id)">Vaciar</a>
+			  <a ng-disabled="listaActual.items.length==0" class="button icon-left ion-close button-dark" ng-click="vaciar(listaActual.$id)">Vaciar</a>
 			</div>
 			<h2 class="mensaje-vacio1" ng-show="listaActual.items.length==0">Lista vacia. Agregue un item!</h2>	
 			<div class="list list-inset">
 				<div class="item div-item" ng-repeat="item in listaActual.items track by $index" index="item.$id">
 					<input type="checkbox" id="{{item.$id}}" class="check" ng-model="item.checked" ng-change="tacharDestachar(item.$id, item.checked)"><label class="label-check" for="{{item.$id}}">{{item.nombre}}</label>
 					<span class="badge badge-assertive precio">${{item.precio}}</span>
-					<a class="button icono-borrar button-icon icon ion-trash-b" ng-click="showConfirmDelete(item.$id)"></a>
+					<a class="button icono-borrar button-icon icon ion-trash-b" ng-click="deleteItem(item.$id, listaActual.$id)"></a>
 				</div>
 			</div>
-			<a ng-click="createModalMembers()" class="button icon-left ion-plus-circled button-dark">Agregar members</a>
+			<a ng-click="createModalMembers()" ng-if="myUserId == listaActual.userIdCreator" class="button icon-left ion-plus-circled button-dark">Agregar members</a>
 			<a ng-click="salirLista(listaActual.$id)" class="button">Salir de la lista</a>
 
 	  </ion-side-menu-content>
