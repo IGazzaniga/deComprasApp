@@ -1,4 +1,13 @@
 angular.module('deComprasApp.main')
+
+.config(['$ionicConfigProvider', function($ionicConfigProvider) {
+
+  $ionicConfigProvider.tabs.position('bottom');
+  $ionicConfigProvider.views.maxCache(0);
+
+}])
+
+
 .run(['$ionicPlatform', function($ionicPlatform) {
 
   $ionicPlatform.ready(function() {

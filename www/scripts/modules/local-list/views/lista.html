@@ -1,10 +1,7 @@
-<ion-view view-title="">
-	<ion-nav-bar class="bar-positive text-center">
-		<ion-nav-back-button class="button-clear">
-	    	Mis Listas
-	  	</ion-nav-back-button>
-	  	{{listaActual.nombre}}
-	</ion-nav-bar>
+<ion-view>
+	<ion-nav-title>
+	    {{listaActual.nombre}}
+	</ion-nav-title>
 	<ion-content>
 		<div class="button-bar bar-dark">
 		  <a ng-disabled="items.length==0" class="button icon-left ion-information-circled button-dark" ng-click="showTotal(listaActual.idLista)">Total</a>
@@ -13,12 +10,16 @@
 		</div>
 		<h2 class="mensaje-vacio" ng-show="items.length==0">Lista vacia. Agregue un item!</h2>	
 		<div class="list list-inset">	
-			<div class="item div-item" ng-repeat="item in items track by item.idItem" index="item.idItem">
-				<input type="checkbox" id="{{item.idItem}}" class="check" ng-model="item.checked" ng-change="tacharDestachar(item.idItem,item.checked)"><label class="label-check" for="{{item.idItem}}">{{item.nombre}}</label>
-				<span class="badge badge-assertive precio">${{item.precio}}</span>
-				<a class="button icono-borrar button-icon icon ion-trash-b" ng-click="showConfirmDelete(item.idItem)"></a>	
-			</div>	
+			<ul class="list">
+	          	<li class="item item-checkbox" style="padding-bottom: 0px" ng-repeat="item in items track by item.idItem" index="item.idItem">
+	    	  		<label class="checkbox"> 
+	    		  		<input type="checkbox" ng-model="item.checked" ng-change="tacharDestachar(item.idItem,item.checked)">
+	    			</label>
+	    			{{item.nombre}}
+	    			<span class="badge badge-assertive precio">${{item.precio}}</span>
+					<a class="button icono-borrar button-icon icon ion-trash-b" style="z-index: 100000" ng-click="showConfirmDelete(item.idItem)"></a>
+	    		</li>
+	        </ul>		
 		</div>	
-
 	</ion-content>
 </ion-view>

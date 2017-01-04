@@ -10,50 +10,11 @@
 
 .precio {
 	margin-right: 40px;
+	margin-top: 5px;
 }
 
 .icono-borrar {
 	float: right;
 	position: relative;
-	bottom: 15px;
-}
-
-.check {
-	display:none; 
-}
-
-.check + .label-check {
-	cursor: pointer;
-}
-
-.label-check:before {
-   display: inline-block;
-   font-family: "Ionicons";
-   speak: none;
-   font-style: normal;
-   font-weight: normal;
-   font-variant: normal;
-   text-transform: none;
-   text-rendering: auto;
-   line-height: 1;
-   -webkit-font-smoothing: antialiased;
-   -moz-osx-font-smoothing: grayscale;
-	content: "";
-	background: transparent;
-	border: 2px solid $positive;
-	border-radius: 100%;
-	height: 25px;
-	margin-right: 20px;
-	text-align: center;
-	vertical-align:middle;
-	width: 25px;
-	position: relative;
-	bottom: 3px;
-}
-
-.check:checked + .label-check:before {
-	content: "";
-	font-size: 22px;
-	color: $positive;
-	font-family: "Ionicons";
+	bottom: 10px;
 }
