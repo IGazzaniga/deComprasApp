@@ -1,6 +1,6 @@
 angular.module('deComprasApp.remote-list')
-	.controller('MisListasRemotesCtrl', ['$scope', '$state', '$stateParams', 'AuthService', 'UserService', 'ListService', '$ionicModal', '$ionicPopup', 
-		function($scope, $state, $stateParams, AuthService, UserService, ListService, $ionicModal, $ionicPopup){
+	.controller('MisListasRemotesCtrl', ['$scope', 'ionicToast', '$state', '$stateParams', 'AuthService', 'UserService', 'ListService', '$ionicModal', '$ionicPopup', 
+		function($scope, ionicToast, $state, $stateParams, AuthService, UserService, ListService, $ionicModal, $ionicPopup){
 	  	
 	  	var userId = $stateParams.userId;
 
@@ -44,6 +44,7 @@ angular.module('deComprasApp.remote-list')
 				UserService.sacarLista(members, List.$id);
 				ListService.remove(List).then(function(data){
 					$scope.misListas = UserService.getListsByUserId(userId);
+					ionicToast.show('Lista eliminada correctamente', 'middle', false, 3000);
 				});
 			});
 		};

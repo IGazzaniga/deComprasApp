@@ -1,5 +1,6 @@
 angular.module('deComprasApp.local-list')
-	.controller('ListaCtrl', ['$scope', '$stateParams', '$ionicModal', '$ionicPopup', '$ionicGesture', 'Items', 'Listas', function($scope, $stateParams, $ionicModal, $ionicPopup, $ionicGesture, Items, Listas) {
+	.controller('ListaCtrl', ['$scope', 'ionicToast', '$stateParams', '$ionicModal', '$ionicPopup', '$ionicGesture', 'Items', 'Listas', 
+		function($scope, ionicToast, $stateParams, $ionicModal, $ionicPopup, $ionicGesture, Items, Listas) {
 
 	//llamada al servicio para que traiga los items de la lista seleccionada
 
@@ -98,6 +99,7 @@ angular.module('deComprasApp.local-list')
 	     if(res) {
 	       Items.deleteItem(idItem).then(function(data){
 	       	$scope.loadItems();
+	       	ionicToast.show('Item eliminado correctamente', 'middle', false, 3000);
 	       });
 	     } else {
 	       console.log('You are not sure');
@@ -118,6 +120,7 @@ angular.module('deComprasApp.local-list')
 	     if(res) {
 			Listas.vaciarLista(idList).then(function(data){
 				$scope.loadItems();
+				ionicToast.show('La lista se vacio correctamente', 'middle', false, 3000);
 			});
 	     } else {
 	       console.log('You are not sure');

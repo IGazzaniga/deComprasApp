@@ -1,5 +1,6 @@
 angular.module('deComprasApp.local-list')
-	.controller('MisListasCtrl', ['$scope', '$ionicModal', '$ionicPopup', 'Listas', function($scope, $ionicModal, $ionicPopup, Listas) {
+	.controller('MisListasCtrl', ['$scope', 'ionicToast', '$ionicModal', '$ionicPopup', 'Listas', 
+		function($scope, ionicToast, $ionicModal, $ionicPopup, Listas) {
 
 		$scope.loadList = function() {
 			Listas.getAllList().then(function(results){
@@ -70,6 +71,7 @@ angular.module('deComprasApp.local-list')
 		$scope.deleteList = function(idList) {
 			Listas.deleteList(idList).then(function(data){
 				$scope.loadList();
+				ionicToast.show('Lista eliminada correctamente', 'middle', false, 3000);
 			});
 		}
 

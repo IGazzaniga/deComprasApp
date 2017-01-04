@@ -116,12 +116,25 @@ angular.module('deComprasApp.remote-list')
 		}
 
 		$scope.deleteItem = function(itemId, listId) {
-			ListService.deleteItem(itemId, listId).then(function(x){
-				ListService.getItems($stateParams.listaRemoteId).then(function(data){
-		  			$scope.listaActual.items = data;
-		  			ionicToast.show('Item eliminado correctamente', 'middle', false, 3000);
-		  		});
-			});
+			var confirmPopup = $ionicPopup.confirm({
+		     title: 'Borrar item',
+		     template: 'Seguro desea borrar este item?',
+		     okText: 'SI',
+		     cancelText: 'NO'
+		   });
+
+		   confirmPopup.then(function(res) {
+		     if(res) {
+				ListService.deleteItem(itemId, listId).then(function(x){
+					ListService.getItems($stateParams.listaRemoteId).then(function(data){
+			  			$scope.listaActual.items = data;
+			  			ionicToast.show('Item eliminado correctamente', 'middle', false, 3000);
+			  		});
+				});
+		     } else {
+		       console.log('You are not sure');
+		     }
+		   });
 		};
 
 		$scope.createModalMembers = function() {
