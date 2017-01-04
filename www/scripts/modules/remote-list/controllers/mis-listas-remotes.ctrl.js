@@ -1,10 +1,18 @@
 angular.module('deComprasApp.remote-list')
-	.controller('MisListasRemotesCtrl', ['$scope', 'ionicToast', '$state', '$stateParams', 'AuthService', 'UserService', 'ListService', '$ionicModal', '$ionicPopup', 
-		function($scope, ionicToast, $state, $stateParams, AuthService, UserService, ListService, $ionicModal, $ionicPopup){
+	.controller('MisListasRemotesCtrl', ['$scope', '$ionicLoading', 'ionicToast', '$state', '$stateParams', 'AuthService', 'UserService', 'ListService', '$ionicModal', '$ionicPopup', 
+		function($scope, $ionicLoading, ionicToast, $state, $stateParams, AuthService, UserService, ListService, $ionicModal, $ionicPopup){
 	  	
-	  	var userId = $stateParams.userId;
+		var userId = $stateParams.userId;
 
-	  	$scope.misListas = UserService.getListsByUserId(userId);
+		$ionicLoading.show();
+	  	$scope.misListas = [];
+	  	UserService.getListsByUserId(userId).then(function(data){
+          var myLists = data;
+          angular.forEach(myLists, function(value, key){
+            $scope.misListas.push(ListService.getById(key));
+          });
+          $ionicLoading.hide();
+        });
 	  			  	
 	  	UserService.getUserById(userId).then(function(user){
 	  		$scope.userData = user;
@@ -43,7 +51,13 @@ angular.module('deComprasApp.remote-list')
 			ListService.getMembers(List.$id).then(function(members){
 				UserService.sacarLista(members, List.$id);
 				ListService.remove(List).then(function(data){
-					$scope.misListas = UserService.getListsByUserId(userId);
+					$scope.misListas = [];
+				  	UserService.getListsByUserId(userId).then(function(data){
+			          var myLists = data;
+			          angular.forEach(myLists, function(value, key){
+			            $scope.misListas.push(ListService.getById(key));
+			          });
+			        });
 					ionicToast.show('Lista eliminada correctamente', 'middle', false, 3000);
 				});
 			});

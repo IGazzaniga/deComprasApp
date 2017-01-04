@@ -15,7 +15,7 @@
         }
 
         function getById(listId) {
-          return $firebaseObject(DataBaseService.listas.child(listId)).$loaded();
+          return $firebaseObject(DataBaseService.listas.child(listId));
         }
 
         function getMembers(listId) {

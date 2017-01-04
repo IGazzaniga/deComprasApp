@@ -1,7 +1,7 @@
 angular.module('deComprasApp.remote-list')
-	.controller('ListaRemoteCtrl', ['$scope', 'ionicToast', 'AuthService', '$ionicSideMenuDelegate', '$ionicPopup', '$ionicModal', '$state', '$stateParams', 'UserService', 'ListService', 
-		function($scope, ionicToast, AuthService, $ionicSideMenuDelegate, $ionicPopup, $ionicModal, $state, $stateParams, UserService, ListService){
-	 
+	.controller('ListaRemoteCtrl', ['$scope', '$ionicLoading', 'ionicToast', 'AuthService', '$ionicSideMenuDelegate', '$ionicPopup', '$ionicModal', '$state', '$stateParams', 'UserService', 'ListService', 
+		function($scope, $ionicLoading, ionicToast, AuthService, $ionicSideMenuDelegate, $ionicPopup, $ionicModal, $state, $stateParams, UserService, ListService){
+	 	
 		$scope.myUserId = AuthService.isLoggedIn().uid;
 
 		function getUsersList() {
@@ -15,17 +15,15 @@ angular.module('deComprasApp.remote-list')
 	  		});
 		};
 
-	  	ListService.getById($stateParams.listaRemoteId).then(function(data){
+		$ionicLoading.show();
+	  	ListService.getById($stateParams.listaRemoteId).$loaded().then(function(data){
 	  		$scope.listaActual = data;
 	  		getUsersList();
 	  		ListService.getItems($stateParams.listaRemoteId).then(function(data){
 	  			$scope.listaActual.items = data;
+	  			$ionicLoading.hide();
 	  		});
 	  	});	
-
-	  	UserService.getAll().then(function(data){
-	  		$scope.allUsers = data;
-	  	})
 	  		
 	  	$scope.userSearch = {};
 
@@ -142,6 +140,11 @@ angular.module('deComprasApp.remote-list')
 		    scope: $scope
 		  }).then(function(modal) {
 		    $scope.modal = modal;
+		    $ionicLoading.show();
+		    UserService.getAll().then(function(data){
+		  		$scope.allUsers = data;
+		  		$ionicLoading.hide();
+		  	})
 		    $scope.modal.show();
 		  });
 		};
