@@ -4,11 +4,13 @@
     <button class="button button-clear button-primary" ng-click="close()">Cancelar</button>
   </ion-header-bar>
   <ion-content class="padding">
-    <div class="list">
-      <label class="item item-input">
-        <input placeholder="Ingrese el precio de este elemento" ng-model="item.precio" type="number">
-      </label>
-      <button class="button button-full button-positive" ng-click="tachar(item.precio)">Guardar</button>
-    </div>
+    <form name="formTachar">
+      <div class="list">
+        <label class="item item-input">
+          <input required placeholder="Ingrese el precio de este elemento" ng-model="item.precio" type="number">
+        </label>
+        <button class="button button-full button-positive" ng-disabled="formTachar.$invalid" ng-click="tachar(item.precio)">Guardar</button>
+      </div>
+    </form>
   </ion-content>
 </ion-modal-view>

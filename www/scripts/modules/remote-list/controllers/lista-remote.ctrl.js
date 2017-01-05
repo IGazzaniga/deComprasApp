@@ -2,7 +2,12 @@ angular.module('deComprasApp.remote-list')
 	.controller('ListaRemoteCtrl', ['$scope', '$ionicLoading', 'ionicToast', 'AuthService', '$ionicSideMenuDelegate', '$ionicPopup', '$ionicModal', '$state', '$stateParams', 'UserService', 'ListService', 
 		function($scope, $ionicLoading, ionicToast, AuthService, $ionicSideMenuDelegate, $ionicPopup, $ionicModal, $state, $stateParams, UserService, ListService){
 	 	
-		$scope.myUserId = AuthService.isLoggedIn().uid;
+	 	if (AuthService.isLoggedIn()) {
+	 		$scope.myUserId = AuthService.isLoggedIn().uid;
+	 	} else {
+	 		$state.go('main.login');
+	 	}
+		
 
 		function getUsersList() {
 			ListService.getMembers($stateParams.listaRemoteId).then(function(data){

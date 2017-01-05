@@ -1,8 +1,12 @@
 angular.module('deComprasApp.remote-list')
-	.controller('MisListasRemotesCtrl', ['$scope', '$ionicLoading', 'ionicToast', '$state', '$stateParams', 'AuthService', 'UserService', 'ListService', '$ionicModal', '$ionicPopup', 
-		function($scope, $ionicLoading, ionicToast, $state, $stateParams, AuthService, UserService, ListService, $ionicModal, $ionicPopup){
+	.controller('MisListasRemotesCtrl', ['$scope', '$ionicLoading', 'ionicToast', '$state', 'AuthService', 'UserService', 'ListService', '$ionicModal', '$ionicPopup', 
+		function($scope, $ionicLoading, ionicToast, $state, AuthService, UserService, ListService, $ionicModal, $ionicPopup){
 	  	
-		var userId = $stateParams.userId;
+	  	if (AuthService.isLoggedIn()) {
+	 		var userId = AuthService.isLoggedIn().uid;
+	 	} else {
+	 		$state.go('main.login');
+	 	}
 
 		$ionicLoading.show();
 	  	$scope.misListas = [];
@@ -40,7 +44,7 @@ angular.module('deComprasApp.remote-list')
 			nuevaListaComp.items = [];
 			ListService.add(nuevaListaComp).then(function(data){
 	            UserService.asignarLista(data.key, userId);
-	            ListService.getById(data.key).then(function(list){
+	            ListService.getById(data.key).$loaded().then(function(list){
 	            	$scope.misListas.push(list);
 	            });
 	        });

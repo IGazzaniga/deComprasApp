@@ -3,14 +3,14 @@ angular.module('deComprasApp.login')
 		function($scope, $state, UserService, AuthService){
 
 	    if (AuthService.isLoggedIn()) {
-	    	$state.go("main.mis-listas-remotes",{userId: AuthService.isLoggedIn().uid});
+	    	$state.go("main.mis-listas-remotes");
 	    };
 	    
 	  	// login with Facebook
 	  	$scope.login = function() {
 	  		AuthService.loginFacebook().then(function(firebaseUser) {
 	  			UserService.saveUser(firebaseUser.user);
-	  			$state.go("main.mis-listas-remotes", {userId: firebaseUser.user.uid});
+	  			$state.go("main.mis-listas-remotes",{},{reload: true});
 		  	}).catch(function(error) {
 		    	console.log("Authentication failed:", error);
 		  	});

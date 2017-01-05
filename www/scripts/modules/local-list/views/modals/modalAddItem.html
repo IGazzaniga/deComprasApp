@@ -4,11 +4,13 @@
     <button class="button button-clear button-primary" ng-click="modal.remove()">Cancelar</button>
   </ion-header-bar>
   <ion-content class="padding">
-    <div class="list">
-      <label class="item item-input">
-        <input placeholder="Titulo" ng-model="nuevoItem.nombre" type="text">
-      </label>
-      <button class="button button-full button-positive" ng-click="addItem(nuevoItem)">Guardar</button>
-    </div>
+    <form name="formAddItem">
+      <div class="list">
+        <label class="item item-input">
+          <input required placeholder="Titulo" ng-model="nuevoItem.nombre" type="text">
+        </label>
+        <button class="button button-full button-positive" ng-disabled="formAddItem.$invalid" ng-click="addItem(nuevoItem)">Guardar</button>
+      </div>
+    </form>
   </ion-content>
 </ion-modal-view>
