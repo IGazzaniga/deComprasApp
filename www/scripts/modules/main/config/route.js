@@ -1,5 +1,6 @@
 angular.module('deComprasApp.main')
-	.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+	.config(['$stateProvider', '$urlRouterProvider',
+	 function($stateProvider, $urlRouterProvider) {
 	    $stateProvider
 		  .state('main', {
 		    url: '/main',
@@ -8,5 +9,10 @@ angular.module('deComprasApp.main')
 		    controller: 'MainCtrl'
 		  })
 
-		$urlRouterProvider.otherwise('/main/listas');	    
-  	}]);
+		$urlRouterProvider.otherwise('/main/listas');	
+ 
+  	}])
+
+  	.constant('$ionicLoadingConfig', {
+	  template: '<ion-spinner icon="android"></ion-spinner>'
+	});

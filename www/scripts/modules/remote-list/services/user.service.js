@@ -15,15 +15,7 @@
       }
 
       function getListsByUserId(uid) {
-        var lists = [];
-        var objListas = $firebaseObject(DataBaseService.users.child(uid).child('misListas'));
-        objListas.$loaded().then(function(data){
-          var myLists = data;
-          angular.forEach(myLists, function(value, key){
-            lists.push($firebaseObject(DataBaseService.listas.child(key)));
-          });
-        });
-        return lists;
+        return $firebaseObject(DataBaseService.users.child(uid).child('misListas')).$loaded();
       }
 
       function saveUser(user) {

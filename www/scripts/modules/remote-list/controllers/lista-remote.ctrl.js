@@ -1,8 +1,13 @@
 angular.module('deComprasApp.remote-list')
-	.controller('ListaRemoteCtrl', ['$scope', 'ionicToast', 'AuthService', '$ionicSideMenuDelegate', '$ionicPopup', '$ionicModal', '$state', '$stateParams', 'UserService', 'ListService', 
-		function($scope, ionicToast, AuthService, $ionicSideMenuDelegate, $ionicPopup, $ionicModal, $state, $stateParams, UserService, ListService){
-	 
-		$scope.myUserId = AuthService.isLoggedIn().uid;
+	.controller('ListaRemoteCtrl', ['$scope', '$ionicLoading', 'ionicToast', 'AuthService', '$ionicSideMenuDelegate', '$ionicPopup', '$ionicModal', '$state', '$stateParams', 'UserService', 'ListService', 
+		function($scope, $ionicLoading, ionicToast, AuthService, $ionicSideMenuDelegate, $ionicPopup, $ionicModal, $state, $stateParams, UserService, ListService){
+	 	
+	 	if (AuthService.isLoggedIn()) {
+	 		$scope.myUserId = AuthService.isLoggedIn().uid;
+	 	} else {
+	 		$state.go('main.login');
+	 	}
+		
 
 		function getUsersList() {
 			ListService.getMembers($stateParams.listaRemoteId).then(function(data){
@@ -15,17 +20,15 @@ angular.module('deComprasApp.remote-list')
 	  		});
 		};
 
-	  	ListService.getById($stateParams.listaRemoteId).then(function(data){
+		$ionicLoading.show();
+	  	ListService.getById($stateParams.listaRemoteId).$loaded().then(function(data){
 	  		$scope.listaActual = data;
 	  		getUsersList();
 	  		ListService.getItems($stateParams.listaRemoteId).then(function(data){
 	  			$scope.listaActual.items = data;
+	  			$ionicLoading.hide();
 	  		});
 	  	});	
-
-	  	UserService.getAll().then(function(data){
-	  		$scope.allUsers = data;
-	  	})
 	  		
 	  	$scope.userSearch = {};
 
@@ -116,12 +119,25 @@ angular.module('deComprasApp.remote-list')
 		}
 
 		$scope.deleteItem = function(itemId, listId) {
-			ListService.deleteItem(itemId, listId).then(function(x){
-				ListService.getItems($stateParams.listaRemoteId).then(function(data){
-		  			$scope.listaActual.items = data;
-		  			ionicToast.show('Item eliminado correctamente', 'middle', false, 3000);
-		  		});
-			});
+			var confirmPopup = $ionicPopup.confirm({
+		     title: 'Borrar item',
+		     template: 'Seguro desea borrar este item?',
+		     okText: 'SI',
+		     cancelText: 'NO'
+		   });
+
+		   confirmPopup.then(function(res) {
+		     if(res) {
+				ListService.deleteItem(itemId, listId).then(function(x){
+					ListService.getItems($stateParams.listaRemoteId).then(function(data){
+			  			$scope.listaActual.items = data;
+			  			ionicToast.show('Item eliminado correctamente', 'middle', false, 3000);
+			  		});
+				});
+		     } else {
+		       console.log('You are not sure');
+		     }
+		   });
 		};
 
 		$scope.createModalMembers = function() {
@@ -129,6 +145,11 @@ angular.module('deComprasApp.remote-list')
 		    scope: $scope
 		  }).then(function(modal) {
 		    $scope.modal = modal;
+		    $ionicLoading.show();
+		    UserService.getAll().then(function(data){
+		  		$scope.allUsers = data;
+		  		$ionicLoading.hide();
+		  	})
 		    $scope.modal.show();
 		  });
 		};

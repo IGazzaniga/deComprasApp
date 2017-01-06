@@ -4,7 +4,7 @@ angular.module('deComprasApp.remote-list')
 	  $stateProvider 
 
 	.state('main.mis-listas-remotes', {
-	    url: '/listas-comp/:userId',
+	    url: '/listas-remotes',
 	    cache: false,
 	    views: {
 	      'listascomp-tab': {
@@ -15,7 +15,7 @@ angular.module('deComprasApp.remote-list')
 	})
 
 	.state('main.lista-remote', {
-	    url: '/lista-comp/:listaRemoteId',
+	    url: '/lista-remote/:listaRemoteId',
 	    cache: false,
 	    views: {
 	      'listascomp-tab': {

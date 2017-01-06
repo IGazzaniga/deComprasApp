@@ -1,10 +1,22 @@
 angular.module('deComprasApp.remote-list')
-	.controller('MisListasRemotesCtrl', ['$scope', '$state', '$stateParams', 'AuthService', 'UserService', 'ListService', '$ionicModal', '$ionicPopup', 
-		function($scope, $state, $stateParams, AuthService, UserService, ListService, $ionicModal, $ionicPopup){
+	.controller('MisListasRemotesCtrl', ['$scope', '$ionicLoading', 'ionicToast', '$state', 'AuthService', 'UserService', 'ListService', '$ionicModal', '$ionicPopup', 
+		function($scope, $ionicLoading, ionicToast, $state, AuthService, UserService, ListService, $ionicModal, $ionicPopup){
 	  	
-	  	var userId = $stateParams.userId;
+	  	if (AuthService.isLoggedIn()) {
+	 		var userId = AuthService.isLoggedIn().uid;
+	 	} else {
+	 		$state.go('main.login');
+	 	}
 
-	  	$scope.misListas = UserService.getListsByUserId(userId);
+		$ionicLoading.show();
+	  	$scope.misListas = [];
+	  	UserService.getListsByUserId(userId).then(function(data){
+          var myLists = data;
+          angular.forEach(myLists, function(value, key){
+            $scope.misListas.push(ListService.getById(key));
+          });
+          $ionicLoading.hide();
+        });
 	  			  	
 	  	UserService.getUserById(userId).then(function(user){
 	  		$scope.userData = user;
@@ -32,7 +44,7 @@ angular.module('deComprasApp.remote-list')
 			nuevaListaComp.items = [];
 			ListService.add(nuevaListaComp).then(function(data){
 	            UserService.asignarLista(data.key, userId);
-	            ListService.getById(data.key).then(function(list){
+	            ListService.getById(data.key).$loaded().then(function(list){
 	            	$scope.misListas.push(list);
 	            });
 	        });
@@ -43,7 +55,14 @@ angular.module('deComprasApp.remote-list')
 			ListService.getMembers(List.$id).then(function(members){
 				UserService.sacarLista(members, List.$id);
 				ListService.remove(List).then(function(data){
-					$scope.misListas = UserService.getListsByUserId(userId);
+					$scope.misListas = [];
+				  	UserService.getListsByUserId(userId).then(function(data){
+			          var myLists = data;
+			          angular.forEach(myLists, function(value, key){
+			            $scope.misListas.push(ListService.getById(key));
+			          });
+			        });
+					ionicToast.show('Lista eliminada correctamente', 'middle', false, 3000);
 				});
 			});
 		};
