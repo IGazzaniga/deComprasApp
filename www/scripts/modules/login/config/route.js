@@ -7,7 +7,7 @@ angular.module('deComprasApp.login')
 	    url: '/login',
 	    cache: false,
 	    views: {
-	      'content': {
+	      'listascomp-tab': {
 	        templateUrl: 'scripts/modules/login/views/login.html',
 	        controller: 'LoginCtrl'
 	      }

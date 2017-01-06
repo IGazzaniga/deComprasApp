@@ -1,0 +1,21 @@
+<ion-view>
+	<ion-nav-title>
+		{{listaActual.nombre}}
+	</ion-nav-title>
+	<ion-content>
+		<div class="button-bar bar-dark">
+		  <a ng-disabled="items.length==0" class="button icon-left ion-information-circled button-dark" ng-click="showTotal(listaActual.idLista)">Total</a>
+		  <a ng-click="createModalItem()" class="button icon-left ion-plus-circled button-dark">Agregar</a>
+		  <a ng-disabled="items.length==0" class="button icon-left ion-close button-dark" ng-click="showConfirmVaciar(listaActual.idLista)">Vaciar</a>
+		</div>
+		<h2 class="mensaje-vacio" ng-show="items.length==0">Lista vacia. Agregue un item!</h2>	
+		<div class="list list-inset">	
+			<div class="item div-item" ng-repeat="item in items track by item.idItem" index="item.idItem">
+				<input type="checkbox" id="{{item.idItem}}" class="check" ng-model="item.checked" ng-change="tacharDestachar(item.idItem,item.checked)"><label class="label-check" for="{{item.idItem}}">{{item.nombre}}</label>
+				<span class="badge badge-assertive precio">${{item.precio}}</span>
+				<a class="button icono-borrar button-icon icon ion-trash-b" ng-click="showConfirmDelete(item.idItem)"></a>	
+			</div>	
+		</div>	
+
+	</ion-content>
+</ion-view>

@@ -1,12 +1,11 @@
 angular.module('deComprasApp.remote-list')
-	.controller('ListaRemoteCtrl', ['$scope', 'AuthService', '$ionicSideMenuDelegate', '$ionicPopup', '$ionicModal', '$state', '$stateParams', 'UserService', 'ListService', 
-		function($scope, AuthService, $ionicSideMenuDelegate, $ionicPopup, $ionicModal, $state, $stateParams, UserService, ListService){
+	.controller('ListaRemoteCtrl', ['$scope', 'ionicToast', 'AuthService', '$ionicSideMenuDelegate', '$ionicPopup', '$ionicModal', '$state', '$stateParams', 'UserService', 'ListService', 
+		function($scope, ionicToast, AuthService, $ionicSideMenuDelegate, $ionicPopup, $ionicModal, $state, $stateParams, UserService, ListService){
 	 
 		$scope.myUserId = AuthService.isLoggedIn().uid;
 
-	  	ListService.getById($stateParams.listaRemoteId).then(function(data){
-	  		$scope.listaActual = data;
-	  		ListService.getMembers($stateParams.listaRemoteId).then(function(data){
+		function getUsersList() {
+			ListService.getMembers($stateParams.listaRemoteId).then(function(data){
 	  			$scope.listaActual.users = [];
 	  			angular.forEach(data, function(value, key){
 	  				UserService.getUserById(key).then(function(user){
@@ -14,6 +13,11 @@ angular.module('deComprasApp.remote-list')
 	  				})
 	  			})
 	  		});
+		};
+
+	  	ListService.getById($stateParams.listaRemoteId).then(function(data){
+	  		$scope.listaActual = data;
+	  		getUsersList();
 	  		ListService.getItems($stateParams.listaRemoteId).then(function(data){
 	  			$scope.listaActual.items = data;
 	  		});
@@ -90,6 +94,7 @@ angular.module('deComprasApp.remote-list')
 		     if(res) {
 		       ListService.vaciar(listId).then(function(data){
 		       	$scope.listaActual.items = [];
+		       	ionicToast.show('La lista se vacio correctamente', 'middle', false, 3000);
 		       })
 		     } else {
 		       console.log('You are not sure');
@@ -97,10 +102,24 @@ angular.module('deComprasApp.remote-list')
 		   });
 		};
 
+		$scope.showTotal = function(listaId) {
+			var total = 0;
+			ListService.getItems($stateParams.listaRemoteId).then(function(data){
+	  			angular.forEach(data, function(item) {
+	  				total = total + item.precio;
+	  			});
+  				$ionicPopup.alert({
+			       title: 'Total',
+			       template: 'El total de la lista hasta el momento es: $' + total
+			    });
+	  		});
+		}
+
 		$scope.deleteItem = function(itemId, listId) {
 			ListService.deleteItem(itemId, listId).then(function(x){
 				ListService.getItems($stateParams.listaRemoteId).then(function(data){
 		  			$scope.listaActual.items = data;
+		  			ionicToast.show('Item eliminado correctamente', 'middle', false, 3000);
 		  		});
 			});
 		};
@@ -159,6 +178,8 @@ angular.module('deComprasApp.remote-list')
 						membersIds[$scope.userSearch.name.$id] = true;
 						ListService.addMember(membersIds).then(function(member){
 							UserService.asignarLista($stateParams.listaRemoteId, $scope.userSearch.name.$id);
+							getUsersList();
+							ionicToast.show('Se agrego correctamente el usuario a esta lista', 'middle', false, 3000);
 							$scope.modal.remove();
 						});
 					})

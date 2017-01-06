@@ -5,7 +5,7 @@ angular.module('deComprasApp.local-list')
 		    url: '/listas',
 		    cache: false,
 		    views: {
-		      'content': {
+		      'listas-tab': {
 		        templateUrl: 'scripts/modules/local-list/views/mis-listas.html',
 		        controller: 'MisListasCtrl'
 		      }
@@ -16,7 +16,7 @@ angular.module('deComprasApp.local-list')
 		    url: '/lista/:listaId',
 		    cache: false,
 		    views: {
-		      'content': {
+		      'listas-tab': {
 		        templateUrl: 'scripts/modules/local-list/views/lista.html',
 		        controller: 'ListaCtrl'
 		      }

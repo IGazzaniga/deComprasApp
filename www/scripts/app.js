@@ -6,7 +6,8 @@ angular.module('deComprasApp', [
   'deComprasApp.remote-list', 
   'deComprasApp.login', 
   'angular-websql', 
-  'firebase'
+  'firebase',
+  'ionic-toast'
 ]);
 
 

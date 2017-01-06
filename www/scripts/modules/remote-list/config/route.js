@@ -7,7 +7,7 @@ angular.module('deComprasApp.remote-list')
 	    url: '/listas-comp/:userId',
 	    cache: false,
 	    views: {
-	      'content': {
+	      'listascomp-tab': {
 	        templateUrl: 'scripts/modules/remote-list/views/mis-listas-remotes.html',
 	        controller: 'MisListasRemotesCtrl'
 	      }
@@ -18,7 +18,7 @@ angular.module('deComprasApp.remote-list')
 	    url: '/lista-comp/:listaRemoteId',
 	    cache: false,
 	    views: {
-	      'content': {
+	      'listascomp-tab': {
 	        templateUrl: 'scripts/modules/remote-list/views/lista-remote.html',
 	        controller: 'ListaRemoteCtrl'
 	      }
