@@ -6,6 +6,7 @@ angular.module('deComprasApp.remote-list')
 	 		var userId = AuthService.isLoggedIn().uid;
 	 	} else {
 	 		$state.go('main.login');
+	 		return;
 	 	}
 
 		$ionicLoading.show();
