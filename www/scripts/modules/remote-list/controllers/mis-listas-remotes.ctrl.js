@@ -1,6 +1,6 @@
 angular.module('deComprasApp.remote-list')
-	.controller('MisListasRemotesCtrl', ['$scope', '$ionicLoading', 'ionicToast', '$state', 'AuthService', 'UserService', 'ListService', '$ionicModal', '$ionicPopup', 
-		function($scope, $ionicLoading, ionicToast, $state, AuthService, UserService, ListService, $ionicModal, $ionicPopup){
+	.controller('MisListasRemotesCtrl', ['$scope', 'Facebook', '$ionicLoading', 'ionicToast', '$state', 'AuthService', 'UserService', 'ListService', '$ionicModal', '$ionicPopup', 
+		function($scope, Facebook, $ionicLoading, ionicToast, $state, AuthService, UserService, ListService, $ionicModal, $ionicPopup){
 	  	
 	  	if (AuthService.isLoggedIn()) {
 	 		var userId = AuthService.isLoggedIn().uid;
@@ -8,6 +8,12 @@ angular.module('deComprasApp.remote-list')
 	 		$state.go('main.login');
 	 		return;
 	 	}
+
+	    $scope.me = function() {
+	      Facebook.api('/me', function(response) {
+	        $scope.me = response;
+	      });
+	    };
 
 		$ionicLoading.show();
 	  	$scope.misListas = [];

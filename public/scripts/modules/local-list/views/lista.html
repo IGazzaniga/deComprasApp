@@ -1,0 +1,31 @@
+<ion-view>
+	<ion-nav-bar class="bar-positive">
+		<ion-nav-buttons side="left">
+			<button ng-click="$ionicGoBack()" nav-direction="back" class="button button-icon button-clear ion-ios-arrow-back">Mis Listas
+			</button>
+		</ion-nav-buttons>
+    </ion-nav-bar>
+	<ion-nav-title>
+		{{listaActual.nombre}}
+	</ion-nav-title>
+	<ion-content>
+		<div class="button-bar bar-dark">
+		  <a ng-disabled="items.length==0" class="button icon-left ion-information-circled button-dark" ng-click="showTotal(listaActual.idLista)">Total</a>
+		  <a ng-click="createModalItem()" class="button icon-left ion-plus-circled button-dark">Agregar</a>
+		  <a ng-disabled="items.length==0" class="button icon-left ion-close button-dark" ng-click="showConfirmVaciar(listaActual.idLista)">Vaciar</a>
+		</div>
+		<h2 class="mensaje-vacio" ng-show="items.length==0">Lista vacia. Agregue un item!</h2>	
+		<div class="list list-inset">	
+			<ul class="list">
+	          	<li class="item item-checkbox" style="padding-bottom: 0px" ng-repeat="item in items track by item.idItem" index="item.idItem">
+	    	  		<label class="checkbox"> 
+	    		  		<input type="checkbox" ng-model="item.checked" ng-change="tacharDestachar(item.idItem,item.checked)">
+	    			</label>
+	    			{{item.nombre}}
+	    			<span class="badge badge-assertive precio">${{item.precio}}</span>
+					<a class="button icono-borrar button-icon icon ion-trash-b" style="z-index: 100000" ng-click="showConfirmDelete(item.idItem)"></a>
+	    		</li>
+	        </ul>		
+		</div>	
+	</ion-content>
+</ion-view>

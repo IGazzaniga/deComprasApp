@@ -1,0 +1,31 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive">
+    <h1 class="title">Nueva Lista</h1>
+    <button class="button button-clear button-primary" ng-click="modal.remove()">X</button>
+  </ion-header-bar>
+  <ion-content>
+    <form name="formAddList">
+      <div class="list">
+        <label class="item item-input item-floating-label">
+          <span class="input-label">Titulo</span>
+          <input required ng-model="nuevaLista.nombre" type="text" placeholder="Titulo">
+        </label>
+        <label class="item item-input item-floating-label">
+          <span class="input-label">Detalles</span>
+          <input ng-model="nuevaLista.detalle" type="text" placeholder="Detalles">
+        </label>
+        <label class="item item-input item-floating-label">
+          <span class="input-label">Fecha</span>
+          <input ng-model="nuevaLista.fecha" type="date" placeholder="Detalles">
+        </label>
+        <label class="item item-input item-floating-label">
+          <span class="input-label">Hora</span>
+          <input ng-model="nuevaLista.hora" type="time" placeholder="Detalles">
+        </label>
+        <button ng-click="addList(nuevaLista)" ng-disabled="formAddList.$invalid" class="button button-block button-positive">
+          Guardar
+        </button>
+      </div>
+    </form>
+  </ion-content>
+</ion-modal-view>

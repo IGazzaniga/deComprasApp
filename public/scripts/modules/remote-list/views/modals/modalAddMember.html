@@ -1,0 +1,14 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive">
+    <h1 class="title">Nueva miembro</h1>
+    <button class="button button-clear button-primary" ng-click="modal.remove()">X</button>
+  </ion-header-bar>
+  <ion-content>
+    <div class="list">
+      <ion-select label="Nombre del Usuario" label-img="photo" label-text="name" provider="allUsers" ng-model="userSearch.name"/>
+      <button ng-click="addMember()" class="button button-block button-positive">
+        Agregar
+      </button>
+    </div>
+  </ion-content>
+</ion-modal-view>

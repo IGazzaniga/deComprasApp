@@ -1,0 +1,16 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive">
+    <h1 class="title">Precio</h1>
+    <button class="button button-clear button-primary" ng-click="close()">Cancelar</button>
+  </ion-header-bar>
+  <ion-content class="padding">
+    <form name="formTachar">
+      <div class="list">
+        <label class="item item-input">
+          <input required placeholder="Ingrese el precio de este elemento" ng-model="item.precio" type="number">
+        </label>
+        <button class="button button-full button-positive" ng-disabled="formTachar.$invalid" ng-click="tachar(item.precio)">Guardar</button>
+      </div>
+    </form>
+  </ion-content>
+</ion-modal-view>
